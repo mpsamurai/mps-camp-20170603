@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <h1>D3.js and Ajax Sample</h1>
+
+    <button id="download-movies-csv">Download Movie CSV</button>
+    <button id="download-movies-csv-view">Download Movie CSV VIEW</button><br />
+    <button id="load-content-movies">movies button</button>
+    <button id="load-content-ratings">ratings button</button>
+    <button id="load-content-tags">tags button</button>
+
+    <table border="1">
+        <thead id="thead">
+        </thead>
+        <tbody id="tbody">
+        </tbody>
+    </table>
+
+    <script src="https://d3js.org/d3.v4.min.js"></script>
+    <script type="text/javascript">
+        d3.select("#download-movies-csv-view").on("click", function () {
+            d3.csv("/ml-latest-small/movies.csv", function(err, data) {
+                // データタイトル行
+                d3.select("#thead")
+                    .append("tr")       // trタグのappendのみ
+                    .selectAll("th")
+                    .data(Object.keys(data[0]))     // dataの1行目のキーのみ取得
+                    .enter()
+                    .append("th")
+                    .text(function(d) {
+                        return d;
+                    });
+                // データ結果行
+                d3.select("#tbody")
+                    .selectAll("tr")
+                    .data(data)
+                    .enter()
+                    .append("tr")
+                    .selectAll("td")
+                    .data(function(obj) {
+                        return Object.keys(obj).map(function (key) {
+                            return obj[key];
+                        });
+                    })
+                    .enter()
+                    .append("td")
+                    .text(function(d) {
+                        return d;
+                    });
+            });
+        });
+    </script>
+    <script type="text/javascript">
+        d3.select("#download-movies-csv").on("click", function () {
+            d3.csv("/ml-latest-small/movies.csv", function(err, data) {
+                console.log(data);
+            });
+        });
+    </script>
+
+    <script type="text/javascript">
+        var loadContentBtn = document.getElementById("load-content-movies");
+        loadContentBtn.addEventListener('click', function() {
+            var httpRequest = new XMLHttpRequest();
+            httpRequest.onreadystatechange = function() {
+                if (httpRequest.readyState == XMLHttpRequest.DONE) {
+                    if (httpRequest.status === 200) {
+                        alert(httpRequest.responseText);
+                    } else {
+                        alert('There was a problem with the request.');
+                    }
+                }
+            }
+            httpRequest.open('GET', '/ml-latest-small/movies.csv');
+            httpRequest.send();
+        });
+
+        var loadContentBtn = document.getElementById("load-content-ratings");
+        loadContentBtn.addEventListener('click', function() {
+            var httpRequest = new XMLHttpRequest();
+            httpRequest.onreadystatechange = function() {
+                if (httpRequest.readyState == XMLHttpRequest.DONE) {
+                    if (httpRequest.status === 200) {
+                        alert(httpRequest.responseText);
+                    } else {
+                        alert('There was a problem with the request.');
+                    }
+                }
+            }
+            httpRequest.open('GET', '/ml-latest-small/ratings.csv');
+            httpRequest.send();
+        });
+
+        var loadContentBtn = document.getElementById("load-content-tags");
+        loadContentBtn.addEventListener('click', function() {
+            var httpRequest = new XMLHttpRequest();
+            httpRequest.onreadystatechange = function() {
+                if (httpRequest.readyState == XMLHttpRequest.DONE) {
+                    if (httpRequest.status === 200) {
+                        alert(httpRequest.responseText);
+                    } else {
+                        alert('There was a problem with the request.');
+                    }
+                }
+            }
+            httpRequest.open('GET', '/ml-latest-small/tags.csv');
+            httpRequest.send();
+        });
+
+    </script>
+</body>
+</html>
