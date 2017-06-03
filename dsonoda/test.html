@@ -5,33 +5,40 @@
     <title>Title</title>
 </head>
 <body>
-
-
-
-
     <script type="text/javascript">
-        function getSquareRoot(num, epsilon) {
-            var low = 0.0;
-            var high = num;
-            var mid = 0.0;
-            var squareRoot = null;
-            while (true) {
-                mid = (high - low) / 2 + low;
-                var pow2Mid = Math.pow(mid, 2);
-                if (Math.abs(pow2Mid - num) >= epsilon) {
-                    if (pow2Mid < num) {
-                        low = mid;
+        var checkPalindrome = function (str, without) {
+            if (!without) {
+                str = str.replace(without, '');
+            }
+            var strlen = str.length;
+            if (strlen == 1) {
+                return true;
+            }
+            var pre  = '';
+            var after  = '';
+            for (var i = 0; i < strlen; i++) {
+                if (i < (strlen / 2)) {
+                    // 前から一文字切り出し
+                    pre = str.slice(i,(i+1));
+                    // 後から一文字切り出し
+                    var afterPosition = ((i + 1) * -1);
+                    if (i == 0) {
+                        after = str.slice(afterPosition);
                     } else {
-                        high = mid;
+                        after = str.slice(afterPosition,(afterPosition + 1));
+                    }
+                    // 比較
+                    if (pre != after) {
+                        return false;
                     }
                 } else {
-                    squareRoot = mid;
                     break;
                 }
             }
-            return squareRoot;
+            return true;
         }
-        console.log(getSquareRoot(16, 0.01));
+        var str = 'abcba';
+        console.log(checkPalindrome(str));
     </script>
 </body>
 </html>
