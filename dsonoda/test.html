@@ -12,20 +12,21 @@
          * @constructor
          */
         // コンストラクタ
-        var Neural = function(x) {
-            // プロパティ初期化
-            this.x = new Array();
-            this.w = new Array();
+        var Neural = function(x, w) {
             this.s = 0;
             this.setX(x);
-            this.setW([1,3]);
+            this.setW(w);
         }
+        // 入力をセット
         Neural.prototype.setX = function (x) {
             this.x = x;
         }
         // 重み付けをセット
         Neural.prototype.setW = function (w) {
-            this.w = w;
+            this.w = new Array();
+            for (var i = 0; i < this.x.length; i++) {
+                this.w[i] = w[i];
+            }
         }
         // 重み付けを取得
         Neural.prototype.getW = function () {
@@ -36,6 +37,10 @@
             for (var i = 0; i < this.x.length; i++) {
                 this.s += (this.x[i] * this.w[i]);
             }
+        }
+        // 入力値の合計を取得
+        Neural.prototype.getS = function () {
+            return this.s;
         }
         // 出力
         Neural.prototype.getOutput = function () {
@@ -50,23 +55,46 @@
          * Neural を継承し、出力メソッド内の処理を定義
          */
         // コンストラクタ
-        var NeuralLogisticSigmaid = function(x) {
-            Neural.call(this, x);
+        var NeuralLogisticSigmaid = function(x, w) {
+            Neural.call(this, x, w);
         }
         NeuralLogisticSigmaid.prototype = Object.create(Neural.prototype);
         NeuralLogisticSigmaid.prototype.getOutput = function() {
             this.setS();
-            var y = 1 / (1 + Math.pow(Math.E, -this.s));
+            var y = 1 / (1 + Math.pow(Math.E, -this.getS()));
             return y;
         }
-
-
         // テスト1
-        var nls = new NeuralLogisticSigmaid([1, 2]);
+        var nls = new NeuralLogisticSigmaid([1, 2], [1,3]);
         console.log(nls.getOutput());
         // テスト2
         nls.setX([0.1, 0.5]);
         console.log(nls.getOutput());
+
+
+        /**
+         * NeuralTanH
+         * @param x
+         * @constructor
+         * Neural を継承し、出力メソッド内の処理を定義
+         */
+        // コンストラクタ
+        var NeuralTanH = function(x, w) {
+            Neural.call(this, x, w);
+        }
+        NeuralTanH.prototype = Object.create(Neural.prototype);
+        NeuralTanH.prototype.getOutput = function() {
+            this.setS();
+            var y = Math.tanh(this.getS());
+            return y;
+        }
+        // テスト1
+        var nth = new NeuralTanH([1, 2], [1,3]);
+        console.log(nth.getOutput());
+        // テスト2
+        nth.setX([0.1, 0.5]);
+        console.log(nth.getOutput());
+
 
     </script>
 </body>
