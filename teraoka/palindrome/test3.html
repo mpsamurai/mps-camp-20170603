@@ -8,37 +8,40 @@
 <body>
  <script type="text/javascript">
 
- function GetSquared(number, errorNmuber){
-     var low = 0.0;
-     var high = number;
-     var squaredRoot = 0;
-     var error = errorNmuber;
+function GetPalindrome(sentence, error) {
+    if (typeof error === 'string') {
+        var subText = sentence.replace(new RegExp(error, 'g'), "");  //new RegExp(エラー文字, g), "変換後"
+        //console.log(subText)
+        var stringnumber = subText.length;
+        var head = 0;
+        var tail = stringnumber - 1;
 
-     while (true) {
-         var mediate = (high - low) / 2 + low;
-         var squaredMid = Math.pow(mediate, 2);
-         if (Math.abs(squaredMid - number) >= errorNmuber) {
-             if (squaredMid < number) {
-                 low = mediate;
-             } else {
-                 high = mediate;
-             }
-         } else {
-             squaredRoot = mediate;
-             break;
-         }
-     }
-     return squaredRoot;
- };
-
- console.log(GetSquared(2, 0.001))
- </script>
-
- <script type="text/javascript">
-    var saySomething = function(something){
-    console.log(something);
+        for (var i = 0; i < subText.length; i++) {
+            if (subText[head + i] === subText[tail]) {
+                console.log(subText[tail]);
+                tail -= 1;
+                if (head === tail) {
+                    console.log("終了");
+                    return true
+                }
+            } else {
+                console.log("NG");
+                return false
+            }
         }
-        saySomething("Hello World!");
+    }else{
+        console.log("文字列を入力してください")
+    }
+}
+//テスト
+console.log(GetPalindrome("1トマ1ト", '1'))
+console.log(GetPalindrome("、、、トマト", '、'))
+console.log(GetPalindrome("abcdef1ght", '1'))
+console.log(GetPalindrome("abc1cba", '1'))
+console.log(GetPalindrome("abc1cba", 1))
+console.log(GetPalindrome("abc1cba", true))
+
+
 </script>
 </body>
 </html>
