@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+
+
+
+    <script type="text/javascript">
+        function getSquareRoot(num, epsilon) {
+            var low = 0.0;
+            var high = num;
+            var mid = 0.0;
+            var squareRoot = null;
+            while (true) {
+                mid = (high - low) / 2 + low;
+                var pow2Mid = Math.pow(mid, 2);
+                if (Math.abs(pow2Mid - num) >= epsilon) {
+                    if (pow2Mid < num) {
+                        low = mid;
+                    } else {
+                        high = mid;
+                    }
+                } else {
+                    squareRoot = mid;
+                    break;
+                }
+            }
+            return squareRoot;
+        }
+        console.log(getSquareRoot(16, 0.01));
+    </script>
+</body>
+</html>
