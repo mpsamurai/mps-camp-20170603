@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+ <script type="text/javascript">
+    var low = 0.0;
+    var high = 2;
+    var squaredRoot = 0;
+    var error = 0.001;
+
+    while (true) {
+        var mediate = (high - low) / 2 + low;
+        var squaredMid = Math.pow(mediate, 2);
+        if (Math.abs(squaredMid - 2) >= error) {
+            if (squaredMid < 2) {
+                low = mediate;
+            } else {
+                high = mediate;
+            }
+        }else{
+            squaredRoot = mediate;
+            break;
+            }
+        }
+    console.log("squaredRoot", squaredRoot)
+    </script>
+</body>
+</html>
