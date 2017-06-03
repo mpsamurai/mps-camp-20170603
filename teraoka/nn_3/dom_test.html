@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Neuron</title>
+</head>
+<body>
+<h1>Neuron sample</h1>
+<ol>
+    <li><input id="x1" type="text" value="1"></li>
+    <li><input id="x2" type="text" value="2"></li>
+    <li><input id="x3" type="text" value="3"></li>
+</ol>
+
+<button id="load-content">click</button>
+
+
+<!--<select name="calculation">-->
+<!--<option value="LogisticNeuron">LogisticNeuron</option>-->
+<!--<option value="TanhNeuron">TanhNeuron</option>-->
+
+<select id="ddlViewBy">
+  <option value="1" selected="selected">LogisticNeuron</option>
+  <option value="2">TanhNeuron</option>
+</select>
+
+<div id="content1"></div>
+<div id="content2"></div>
+
+<script type="text/javascript">
+    var input1 = document.getElementById("content1");
+    var input2 = document.getElementById("content2");
+    var x1 = document.getElementById("x1");
+    var x2 = document.getElementById("x2");
+    var x3 = document.getElementById("x3");
+    x1 = x1.getAttribute("value");
+    x2 = x2.getAttribute("value");
+    x3 = x3.getAttribute("value");
+    console.log(x1,x2,x3)
+
+
+    var loadContentBtn = document.getElementById("load-content"); // getElementById("load-content")ターゲットを決める
+    loadContentBtn.addEventListener("click", function(){     // .addEventListener追加する意味
+        var content = document.getElementById("content1");    // "click"を受け取ったらfunction以下を実行
+        console.log(content);
+
+
+        var Neuron = function(inputWeight){
+        this.w = inputWeight;
+        this.x = [];
+        this.s = 0;
+        // console.log(Math.exp(1)) // e = 2.71
+        };
+        //input
+        Neuron.prototype.setInputValue = function(inputValue) {
+            this.x = inputValue;
+        };
+        // 継承 //
+        var LogisticNeuron = function(w) {
+            Neuron.call(this, w);
+            // this.w = w(入力値として受けるため引数を作成)
+        };
+        LogisticNeuron.prototype = Object.create(Neuron.prototype);
+        // ロジスティック関数
+        LogisticNeuron.prototype.getOutput = function() {
+            for (var i = 0; i < this.x.length; i++){
+                this.s += this.x[i]*this.w[i];
+            }
+            return  1.0 / (1.0 + Math.exp(-this.s))
+        };
+        var TanhNeuron = function(w) {
+            Neuron.call(this, w);
+            // this.w = w(入力値として受けるため引数を作成)
+        };
+        TanhNeuron.prototype = Object.create(Neuron.prototype);
+        // Tanh関数
+        TanhNeuron.prototype.getOutput = function() {
+            for (var i = 0; i < this.x.length; i++){
+                this.s += this.x[i]*this.w[i];
+            }
+            return  Math.tanh(this.s)
+        };
+
+
+
+        var e = document.getElementById("ddlViewBy");
+        var number = e.options[e.selectedIndex].value;
+        console.log(number);
+        if (number === '1'){
+            //シグモイド関数呼び出し
+            var inputValue = [x1,x2,x3];
+            var inputWeight = [1,2,3];
+            var p = new LogisticNeuron(inputWeight);
+            p.setInputValue(inputValue);
+            var y1 = p.getOutput();
+            //input1.innerHTML = y1;
+            console.log(y1);
+            input1.innerHTML = y1;
+
+        }else if (number === '2'){
+            //Tanh関数呼び出し
+            var inputValue = [x1,x2,x3];
+            var inputWeight = [1,2,3];
+            var p = new TanhNeuron(inputWeight);
+            p.setInputValue(inputValue);
+            var y2 = p.getOutput();
+            //input2.innerHTML = y2;
+            console.log(p.getOutput());
+            input2.innerHTML = y2;
+        }
+
+    });
+
+</script>
+</body>
+</html>
+
