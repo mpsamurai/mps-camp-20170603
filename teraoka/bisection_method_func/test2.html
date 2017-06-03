@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<!--suppress ALL -->
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+ <script type="text/javascript">
+
+ function GetSquared(number, errorNmuber){
+     var low = 0.0;
+     var high = number;
+     var squaredRoot = 0;
+     var error = errorNmuber;
+
+     while (true) {
+         var mediate = (high - low) / 2 + low;
+         var squaredMid = Math.pow(mediate, 2);
+         if (Math.abs(squaredMid - number) >= errorNmuber) {
+             if (squaredMid < number) {
+                 low = mediate;
+             } else {
+                 high = mediate;
+             }
+         } else {
+             squaredRoot = mediate;
+             break;
+         }
+     }
+     return squaredRoot;
+ };
+
+ console.log(GetSquared(2, 0.001))
+ </script>
+
+ <script type="text/javascript">
+    var saySomething = function(something){
+    console.log(something);
+        }
+        saySomething("Hello World!");
+</script>
+</body>
+</html>
