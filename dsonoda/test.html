@@ -13,20 +13,13 @@
          */
         // コンストラクタ
         var Neural = function(x, w) {
+            this.x = x;
+            this.w = w;
             this.s = 0;
-            this.setX(x);
-            this.setW(w);
         }
         // 入力をセット
         Neural.prototype.setX = function (x) {
             this.x = x;
-        }
-        // 重み付けをセット
-        Neural.prototype.setW = function (w) {
-            this.w = new Array();
-            for (var i = 0; i < this.x.length; i++) {
-                this.w[i] = w[i];
-            }
         }
         // 重み付けを取得
         Neural.prototype.getW = function () {
