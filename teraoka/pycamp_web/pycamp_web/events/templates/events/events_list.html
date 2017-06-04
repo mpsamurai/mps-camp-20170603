@@ -6,6 +6,8 @@
 	<div class="panel-body">
 	<p>イベント</p>
 	</div>
+
+
    <table class="table">
 		{% for event in events %}
 		<tr>
@@ -26,6 +28,21 @@
 	</table>
 
 </div>
+
+<nav>
+	<!--リストにして前後3つづつを表示させる-->
+
+  <ul class="pagination">
+	  <li><a href="#">&laquo;</a></li>
+	  {% for page in pagination %}
+    <li><a href="{% url "events:list" %}?p={{ page }}">{{ page }}</a></li>
+	  {% endfor %}
+	  <li><a href="#">&raquo;</a></li>
+
+
+  </ul>
+
+</nav>
 {% endblock %}
     <!---->
 <!-- Latest compiled and minified JavaScript -->
