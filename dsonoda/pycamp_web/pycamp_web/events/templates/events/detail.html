@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="panel panel-default">
+    <!-- Default panel contents -->
+    <div class="panel-heading">PyCamp 日程表</div>
+    <div class="panel-body">
+    <p>イベントリスト詳細です</p>
+    </div>
+
+    <table class="table">
+        <tr>
+            <td>{{ event.title }}</td>
+        </tr>
+        <tr>
+            <td>{{ event.detail }}</td>
+        </tr>
+        <tr>
+            <td>{{ event.start }} ~ {{ event.end }}</td>
+        </tr>
+        <tr>
+            <td>
+            {% for document in event.documents.all %}
+                <img src="{{document.upload.url}}" alt="Hi!" style="width:100px" />
+            {% endfor %}
+            </td>
+        </tr>
+    </table>
+    <hr>
+
+    {% if request.user.is_authenticated %}
+    <form method="post">
+        <table>
+            <tr>
+                <td>質問</td>
+            </tr>
+            <tr>
+                <td>
+                    {% csrf_token %}
+                    {{form}}
+                </td>
+            </tr>
+        </table>
+        <input type="submit">
+    </form>
+    {% endif %}
+    <hr>
+
+    <table class="table">
+        <tr>
+            <td colspan="2">質問とコメント</td>
+        </tr>
+        {% for question in event_questions %}
+        <tr>
+            <td>{{question.title}}</td>
+            <td>{{question.detail}}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+{% endblock %}

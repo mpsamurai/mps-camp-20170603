@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="panel panel-default">
+	<!-- Default panel contents -->
+	<div class="panel-heading">PyCamp 日程表</div>
+	<div class="panel-body">
+	<p>イベントリストです</p>
+	</div>
+{{num_pages}}
+    {% for page in pages %}
+        <a href="?p={{ page }}">{{ page }}</a>
+    {% endfor %}
+
+    <div class="pagination">
+        <span class="step-links">
+            {% if events.has_previous %}
+                <a href="?p={{ events.previous_page_number }}">previous</a>
+            {% endif %}
+
+            <span class="current">
+                Page {{ events.number }} of {{ events.paginator.num_pages }}.
+            </span>
+
+            {% if events.has_next %}
+                <a href="?p={{ events.next_page_number }}">next</a>
+            {% endif %}
+        </span>
+    </div>
+
+	<table class="table">
+		{% for event in events %}
+		<tr>
+            <td><a href="{% url 'events:detail' event.id %}">{{ event.title }}</a></td>
+			<td>{{ event.detail }}</td>
+			<td>{{ event.start }} ~ {{ event.end }}</td>
+			<td>
+            {% for document in event.documents.all %}
+                <img src="{{document.upload.url}}" alt="Hi!" style="width:100px" />
+            {% endfor %}
+            </td>
+		</tr>
+		{% endfor %}
+	</table>
+</div>
+{% endblock %}
