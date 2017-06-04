@@ -39,8 +39,7 @@
                 .append("th")
                 .text(function(d){
                     console.log(d);
-                    return d}); // [a,b,c]
-                //});
+                    return d});
             d3.select("tbody")
                 .selectAll("tr")
                 .data(data)
@@ -48,13 +47,13 @@
                 .append("tr")
                 .selectAll("td")
                 .data(function(d){
-//                    console.log(d3.values(d));
+                    //console.log(d3.values(d));
                     return d3.values(d);
                 })
                 .enter()
                 .append("td")
                 .text(function(d){
-                    return d}); // [a,b,c]
+                    return d});
                 });
     });
 

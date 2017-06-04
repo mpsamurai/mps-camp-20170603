@@ -2,9 +2,26 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>$Title$</title>
+    <title>Title</title>
 </head>
 <body>
-$END$
+
+<h1>Event Sample</h1>
+<div id="content"></div>
+<button id="load-content">Load content</button>
+<script type="text/javascript">
+    var loadContentBtn = document.getElementById("load-content"); // getElementById("load-content")ターゲットを決める
+    loadContentBtn.addEventListener("click", function(){     // .addEventListener追加する意味
+        var content = document.getElementById("content");    // "click"を受け取ったらfunction以下を実行
+        console.log(content);
+
+        var subTitle = document.createElement("h2");
+        var subTitleText = document.createTextNode("Subtitle loaded by button.");
+        subTitle.appendChild(subTitleText);
+
+        content.appendChild(subTitle);
+    });
+</script>
+
 </body>
 </html>

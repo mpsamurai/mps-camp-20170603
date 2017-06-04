@@ -2,9 +2,19 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>$Title$</title>
+    <title>Title</title>
 </head>
 <body>
-$END$
+<h1>DOM Sample2</h1>
+<input id="message-input" type="text" value="This is input box.">
+
+<div id="content"></div>
+
+<script type="text/javascript">
+    var input = document.getElementById("message-input");
+    var content = document.getElementById("content");
+    content.innerHTML = input.getAttribute("value");
+</script>
+
 </body>
 </html>

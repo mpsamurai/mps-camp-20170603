@@ -2,9 +2,33 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>$Title$</title>
+    <title>Title</title>
 </head>
 <body>
-$END$
+    <script type="text/javascript">
+    var helloWorld = 'Hello World!';
+    console.log(helloWorld);
+
+    var numberOfApples = 10, numberOfChildren = 2;
+    console.log('The number of apples that the children can get is'
+    + numberOfApples / numberOfChildren + '.');
+
+    if (numberOfApples < numberOfChildren) {
+        console.log('OMG!');
+    }else{
+        console.log('Everyone is happy!');
+    }
+
+    for (var i = 0; i < 10; i++){
+        console.log('Count' + i);
+    }
+    </script>
+    
+    <script>
+        var helloWorld = 'Hello World!';
+        for (var i = 0; i < helloWorld.length; i++){
+            console.log(helloWorld[i]);  //文字列も配列としてとらえられるよ
+        }
+    </script>
 </body>
 </html>

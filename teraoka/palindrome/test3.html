@@ -8,6 +8,90 @@
 <body>
  <script type="text/javascript">
 
+////////////////////////////////////////////////////////////////
+//　変数の型チェック //
+////////////////////////////////////////////////////////////////
+var obj = {}
+console.log(typeof(obj));
+
+var obj = function(){}
+console.log(typeof(obj));
+
+var obj = 1;
+console.log(typeof(obj));
+
+var obj = 'hello';
+console.log(typeof(obj));
+
+////////////////////////////////////////////////////////////////
+//　getメソッドとsetメソッド //
+////////////////////////////////////////////////////////////////
+var Neuron = function(inputWeight){
+    this.w = inputWeight;
+    this.x = [];
+    this.s = 0;
+    console.log(Math.exp(1)) // e = 2.718
+};
+// シグモイド関数
+Neuron.prototype.getSigmoid = function(inputValue) {
+    for (var i = 0; i < inputValue.length; i++){
+        this.s += this.x[i]*this.w[i];
+    }
+    return  1.0 / (1.0 + Math.exp(-this.s))
+};
+//input
+Neuron.prototype.setInputValue = function(inputValue) {
+    this.x = inputValue;
+};
+
+var inputValue = [2,3,4]
+var inputWeight = [1,2,3]
+var p = new Neuron(inputWeight);      //入力値を決める
+p.setInputValue(inputValue)          //重みをセットする
+console.log(p.getSigmoid(inputValue))
+</script>
+////////////////////////////////////////////////////////////////
+// 関数を作る //
+////////////////////////////////////////////////////////////////
+// 継承 //
+<script>
+var Point2D = function(x, y){
+    this.x = x;
+    this.y = y;
+};
+
+Point2D.prototype.getCoordinate = function() {
+    return [this.x, this.y];
+};
+
+Point2D.prototype.setCoordinate = function(x, y){
+    this.x = x;
+    this.y = y;
+}
+
+var p = new Point2D(10, 10);
+console.log(p.getCoordinate());
+
+var Point3D = function(x, y, z) {
+    Point2D.call(this, x, y); //Point2Dを呼ぶ(.call(this, x, y)これは2Dの持っていた変数x,yに3D切り替わる)
+    // this.x = x(Point3Dのもの)
+    // this.y = y(Point3Dのもの)
+    this.z = z;
+}
+
+Point3D.prototype = Object.create(Point2D.prototype);  // prototypeを継承している
+
+Point3D.prototype.getCoordinate = function() {
+    var coordinate = Point2D.prototype.getCoordinate.call(this);
+    coordinate.push(this.z);
+    return coordinate;
+};
+
+var p = new Point3D(10, 10, 20);
+console.log(p.getCoordinate());
+</script>
+////////////////////////////////////////////////////////////////
+<script>
 function GetPalindrome(sentence, error) {
     if (typeof error === 'string') {
         var subText = sentence.replace(new RegExp(error, 'g'), "");  //new RegExp(エラー文字, g), "変換後"
@@ -45,3 +129,5 @@ console.log(GetPalindrome("abc1cba", true))
 </script>
 </body>
 </html>
+
+

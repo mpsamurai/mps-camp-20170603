@@ -2,9 +2,93 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>$Title$</title>
+    <title>Title</title>
 </head>
 <body>
-$END$
+
+<button id="load-movies">moviesButton</button>
+<button id="load-ratings">ratingsButton</button>
+<button id="load-tags">tagsButton</button>
+<button id="download-movies-csv">
+    Download Moive CSV
+</button>
+<div id="movies"></div>
+
+<script src="https://d3js.org/d3.v4.min.js"></script>
+<script type="text/javascript">                        // d3.select("#load-movies").これは <button id="load-movies">これのこと
+    d3.select("#load-movies").on("click", function(){  // # が id を意味しているdownload-movies-csvこのid
+        d3.csv("movies.csv", function(err, data) { // d3.csvでcsvを読み込んでくれ(今のディレクトリ  // (errか、成功ならdata)
+            console.log(data);   //functionで成功ならdataへ　そのdataを出力 データはJSで変換させやすい[key:value]
+            d3.select("#movies")
+                .selectAll("p")  // pの要素へdataを追加してあげる<div id="movies">この中の <p>へ入れる！</div>
+                .data(data)      //そのデータはdata
+                .enter()         //enterコマンドでデータを流し込む [Object, Object, Object を１個づつ抜いていく
+                .append("p")     // 流し込むデータはp は.appendする
+                .text(function(d){  // pの中のtext形式でappend どういう風にはfucntion以下
+                    return d.movieId + ',' + d.title + ',' + d.genres}); //dとは1行づつ
+                });         //1行の中の movieId と title と genres
+        });
+</script>
+
+<script type="text/javascript">
+    var loadContentBtn = document.getElementById("load-movies");
+    var loadratingsBtn = document.getElementById("load-ratings");
+    var loadtagsBtn = document.getElementById("load-tags");
+    loadContentBtn.addEventListener('click', function(){
+        var httpRequest = new XMLHttpRequest();
+        httpRequest.onreadystatechange = function () {
+            if(httpRequest.readyState === XMLHttpRequest.DONE){
+                if(httpRequest.status === 200){
+                    alert(httpRequest.responseText);
+                }else{
+                    alert('There was a problem with the request.');
+                }
+        }
+    };
+        httpRequest.open('GET', '/movies.csv');
+        httpRequest.send();
+    })
+    loadratingsBtn.addEventListener('click', function(){
+        var httpRequest = new XMLHttpRequest();
+        httpRequest.onreadystatechange = function () {
+            if(httpRequest.readyState === XMLHttpRequest.DONE){
+                if(httpRequest.status === 200){
+                    alert(httpRequest.responseText);
+                }else{
+                    alert('There was a problem with the request.');
+                }
+        }
+    };
+        httpRequest.open('GET', '/ratings.csv');
+        httpRequest.send();
+    })
+    loadtagsBtn.addEventListener('click', function(){
+        var httpRequest = new XMLHttpRequest();
+        httpRequest.onreadystatechange = function () {
+            if(httpRequest.readyState === XMLHttpRequest.DONE){
+                if(httpRequest.status === 200){
+                    alert(httpRequest.responseText);
+                }else{
+                    alert('There was a problem with the request.');
+                }
+        }
+    };
+        httpRequest.open('GET', '/tags.csv');
+        httpRequest.send();
+    })
+
+</script>
+
+
+
+<!--//Request.onreadystatechange(変わった) => 状態が変化するとfunction()行う-->
+<!--// XML....DONE(処理が終了)-->
+<!--// 処理が成功200-->
+<!--// alertに httpRequest.responseにTextで表示-->
+<!--// elseなら alert(エラー)-->
+
+<!--// OKなら通信始めよう-->
+<!--// httpRequest.open通信回線open(通常はGET, どこにとってきたい？) UPloadならPOST-->
+<!--// httpRequest.sendがとってくる意味-->
 </body>
 </html>

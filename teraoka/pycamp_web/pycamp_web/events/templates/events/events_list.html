@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="panel panel-default">
+	<!-- Default panel contents -->
+	<div class="panel-heading">Events</div>
+	<div class="panel-body">
+	<p>イベント</p>
+	</div>
+   <table class="table">
+		{% for event in events %}
+		<tr>
+			<td>{{ event.title }}</td>
+			<td>{{ event.detail }}</td>
+			<td>{{ event.start }} ~ {{ event.end }}</td>
+			<td>
+				<ul>
+				{% for document in event.documents.all %}
+					<li><a href="{{ event.uploaed.url }}">{{ document.title }}</a></li>
+				{% endfor %}
+				</ul>
+			</td>
+            <!--<td><img src="{{ event.uploaed.url }}"></td>-->
+		</tr>
+		{% endfor %}
+	</table>
+
+</div>
+{% endblock %}
+    <!---->
+<!-- Latest compiled and minified JavaScript -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+</body>
+</html>

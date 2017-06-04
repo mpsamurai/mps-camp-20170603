@@ -2,9 +2,21 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>$Title$</title>
+    <title>Title</title>
 </head>
 <body>
-$END$
+
+<h1>DOM Sample</h1>
+<div id="content"></div>
+<script type="text/javascript">
+
+    var content = document.getElementById("content");  //content id 位置を取得し変数 contentへ代入
+    var subTitle = document.createElement("h2");    //"h2"という名前を持ったエレメントをsubTtleを作る
+    var subTitleText = document.createTextNode("This is the subtitle.");
+    subTitle.appendChild(subTitleText);
+    content.appendChild(subTitle);
+
+</script>
+
 </body>
 </html>
