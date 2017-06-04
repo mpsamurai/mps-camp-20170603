@@ -19,7 +19,7 @@ class EventListView(View):
 
 
 
-class EventDetailView(View): #イベントの詳細ページを取得
+class EventDetailView(View):  # イベントの詳細ページを取得
     def get(self, request, event_id):
         event = models.Event.objects.get(id = event_id)
         return render(request, 'events/events_detail.html', {'event': event})

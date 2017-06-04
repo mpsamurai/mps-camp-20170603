@@ -9,7 +9,8 @@
    <table class="table">
 		{% for event in events %}
 		<tr>
-			<td>{{ event.title }}</td>
+			<!--<td><a href="events/{{event.id}}">{{ event.title }}</a></td>-->
+			<td><a href="{% url 'events:detail' event.id %}">{{ event.title }}</a></td>
 			<td>{{ event.detail }}</td>
 			<td>{{ event.start }} ~ {{ event.end }}</td>
 			<td>
