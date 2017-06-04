@@ -1,0 +1,6 @@
+.DS_Store
+.idea/
+movielens/
+.vagrant/
+Vagrantfile
+venv/

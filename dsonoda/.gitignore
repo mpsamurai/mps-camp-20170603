@@ -1,0 +1,5 @@
+.DS_Store
+.idea/
+bisection_method_list.py
+movielens/
+vagrant/
