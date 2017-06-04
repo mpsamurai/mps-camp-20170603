@@ -7,3 +7,6 @@ from events import models
 class EventAdmin(admin.ModelAdmin):
    pass
 
+@admin.register(models.EventQuestion)  # modelsイベントadminクラスですよと定義(adminに登録したいクラスを作る時)
+class EventQuestionAdmin(admin.ModelAdmin):
+   pass

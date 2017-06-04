@@ -5,6 +5,9 @@ from documents.models import Document
 from django.http import HttpResponse   # httpのレスポンスを返す
 from django.http import Http404
 from django.core.paginator import Paginator  # ページネーションを作成する
+from events.models import EventQuestion
+from events import forms
+from django.contrib.auth.decorators import login_required
 
 # # ログをとる練習
 # import logging
@@ -36,7 +39,7 @@ class EventListView(View):
             if p_page > 5:
                 pages.append(i+p_page) # 3,4,5,6,7,8,9
                 # raise Exception(pages)
-            elif p_page > p_page[-4]:
+            elif p_page > 30:
                 pages.append(p_page)
                 break
 
@@ -51,7 +54,23 @@ class EventDetailView(View):  # イベントの詳細ページを取得
     def get(self, request, event_id):
         try:
             event = models.Event.objects.get(id=event_id)
-            return render(request, 'events/events_detail.html', {'event': event})
+            event_questions = models.EventQuestion.objects.filter(event__id = event_id)
+            form = forms.EventQuestionForm()
+            # raise Exception(event_question)
+            return render(request, 'events/events_detail.html', {'event': event, 'event_questions': event_questions, 'form':form})
+
         except models.Event.DoesNotExist:
              #raise Http404
             return redirect('events:list')
+
+
+    def post(self, request, event_id):
+        form = forms.EventQuestionForm(request.POST) #postされたデータを取得している-> formへ入れている
+        # インスタンスを作成する
+        if form.is_valid():  # 変な情報がないことを保証する場合
+            event_question = form.save(commit = False) # インスタンスだけ生成してDBには入れない(commit = False)
+            event_question.user = request.user
+            event_question.event = models.Event.objects.get(id=event_id)
+            event_question.save()  # これはDBにsave()
+
+            return self.get(request, event_id)
