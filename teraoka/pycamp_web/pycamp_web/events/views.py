@@ -1,8 +1,9 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views import View
 from events import models   #モデルをインポート
 from documents.models import Document
 from django.http import HttpResponse   # httpのレスポンスを返す
+from django.http import Http404
 
 
 class EventListView(View):
@@ -21,5 +22,9 @@ class EventListView(View):
 
 class EventDetailView(View):  # イベントの詳細ページを取得
     def get(self, request, event_id):
-        event = models.Event.objects.get(id = event_id)
-        return render(request, 'events/events_detail.html', {'event': event})
+        try:
+            event = models.Event.objects.get(id=event_id)
+            return render(request, 'events/events_detail.html', {'event': event})
+        except models.Event.DoesNotExist:
+             #raise Http404
+            return redirect('events:list')
