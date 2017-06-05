@@ -61,13 +61,13 @@ class EventListView(View):
                 after_p_num = 3  # 現在ページNo前後の表示ページ数
                 start_page = 1  # 表示開始ページNo
                 end_page = (after_p_num * 2) + 2  # 表示終了ページNo
-                if now_page - after_p_num < 1:
+                if now_page - after_p_num < 1:                        # (今)4 - 3 < 1 3ページ目までは以下処理
                     start_page = 1  # 表示開始ページNo
                     end_page = (after_p_num * 2) + 2  # 表示終了ページNo
-                elif now_page + after_p_num > paginator.num_pages:
+                elif now_page + after_p_num > paginator.num_pages:    # (今)47+3 > 50　47ページで以下処理
                     start_page = paginator.num_pages - after_p_num * 2
                     end_page = paginator.num_pages + 1
-                else:
+                else:                                                 # 上記２条件以外(4 ~ 46ページ)は以下処理
                     start_page = now_page - after_p_num
                     end_page = now_page + after_p_num + 1
                 for p in range(start_page, end_page):
