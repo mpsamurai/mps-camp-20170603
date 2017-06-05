@@ -45,12 +45,15 @@ var svgContainer = d3.select("body").append("svg") //d3で要素を作ってい�
     .attr("width",200).attr("height",200);
 
 d3.select("#createpush").on("click", function(){
-    push()
-    draw()
+    push();
+    draw();
+});
+d3.select("#removepush").on("click", function(){
+   remove();
+    draw();
 });
 
 function push() {
-
     var datum = {};
         var cx = document.getElementById("cx");
         var cy = document.getElementById("cy");
@@ -62,12 +65,11 @@ function push() {
         datum["color"] = color.value;
         data.push(datum);
         console.log("data:", data);
-
   // <circle>要素を作っている <circle cx="30" cy="30" r="20" style="fill: green;"></circle>
 
 }
-push()
-draw()
+push();
+draw();
 
 function draw() {
 
@@ -82,19 +84,18 @@ function draw() {
     .data(data).exit().remove()
 }
 
-
-d3.select("#removepush").on("click", function(){
-   remove()
-});
-
 function remove(){
     data.pop()
-    draw()
 }
-
-
 
 </script>
 <!-- some javascript code here -->
 </body>
 </html>
+
+<!--models.py>取得したデータを(データベースはそのまま)
+    view.py>ある映画について男がつけた点数の平均
+                   女の平均これの全てを集める
+    D3.js>相関図に描画する
+    　　　 - scaleLinear
+                   -->
