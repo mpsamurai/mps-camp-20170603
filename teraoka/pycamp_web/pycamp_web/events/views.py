@@ -80,10 +80,10 @@ class EventDetailView(View):  # イベントの詳細ページを取得
     #  フォームは見えるけど、投稿はできない！ようにする(ログインしないと)
     @method_decorator(login_required)  # ビューが必ず持っているリクエストを受け取るか(ログインをしている人しか受け取ったらダメ)
     def post(self, request, event_id):
-        form = forms.EventQuestionForm(request.POST) #postされたデータを取得している-> formへ入れている
+        form = forms.EventQuestionForm(request.POST)  # postされたデータを取得している-> formへ入れている
         # インスタンスを作成する
         if form.is_valid():  # 変な情報がないことを保証する場合
-            event_question = form.save(commit = False) # インスタンスだけ生成してDBには入れない(commit = False)
+            event_question = form.save(commit=False)  # インスタンスだけ生成してDBには入れない(commit = False)
             event_question.user = request.user
             event_question.event = models.Event.objects.get(id=event_id)  # idからどのイベントに紐づいているかをチェック
             event_question.save()  # これはDBにsave()
@@ -98,19 +98,20 @@ class EventBookingList(View):  # 予約モデル
             event = models.Event.objects.get(id=event_id)
             event_bookings = models.EventBookingList.objects.filter(event__id=event_id, user=request.user)  # eventのidを取得
             #raise Exception(event_bookings)
-            form = forms.EventQuestionForm()
+            form = forms.EventBookingForm()  # formを受け取っている
 
             return render(request, 'events/events_booking.html', {'event': event, 'event_bookings': event_bookings, 'form': form})
 
         except models.Event.DoesNotExist:
             return redirect('events:list')
 
-    #  フォームは見えるけど、投稿はできない！ようにする(ログインしないと)
-    @method_decorator(login_required)  # ビューが必ず持っているリクエストを受け取るか(ログインをしている人しか受け取ったらダメ)
+
+    @method_decorator(login_required)
     def post(self, request, event_id):
-        form = forms.EventBookingForm(request.POST) #postされたデータを取得している-> formへ入れている
-        # インスタンスを作成する
-        if form.is_valid():  # 変な情報がないことを保証する場合
+        form = forms.EventBookingForm(request.POST)  # formを送っている
+
+        if form.is_valid():  # validチェック
+            # raise Exception("OK", form)
             event_booking = form.save(commit=False)  # インスタンスだけ生成してDBには入れない(commit = False)
             event_booking.user = request.user
             event_booking.event = models.Event.objects.get(id=event_id)  # idからどのイベントに紐づいているかをチェック
