@@ -1,29 +1,79 @@
 {% extends 'base.html' %}
 {% block content %}
 <div class="panel panel-default">
-	<!-- Default panel contents -->
-	<div class="panel-heading">Events</div>
-	<div class="panel-body">
-	<p>イベント</p>
-	</div>
-    <p>{{ event.title }}   {{event.detail}}  {{ event.start }} ~ {{ event.end }}</p>
-	<div>
-		{% if request.user.is_authenticated %}
-		<form method="post">
-			{% csrf_token %}
-		<tr>{{ form }}</tr>
-		<input type="submit">
-		</form>
-		{% endif %}
+    <!-- Default panel contents -->
+    <div class="panel-heading">PyCamp 日程表</div>
+    <div class="panel-body">
+    <p>イベントリスト詳細です</p>
+    </div>
 
-		{% for question in event_questions %}
-		<tr>
-			<td>{{ question }}</td>
+    <table class="table">
+		<h2>{{ event.title }}</h2>
+        <tr>
+			<td>{{ event.detail }}</td>
 		</tr>
-		{% endfor %}
+		<tr>
+			<td>{{ event.start }} ~ {{ event.end }}</td>
+        </tr>
+        <tr>
+            <td>
+            {% for document in event.documents.all %}
+                <img src="{{document.upload.url}}"/>
+            {% endfor %}
+            </td>
+        </tr>
+    </table>
 
+    <hr>
 
-	</div>
+    {% if request.user.is_authenticated %}
+    <form method="post">
+        <table>
+            <tr>
+                <td>質問</td>
+            </tr>
+            <tr>
+                <td>
+                    {% csrf_token %}
+                    {{form}}
+                </td>
+            </tr>
+        </table>
+        <input type="submit">
+    </form>
+    {% endif %}
+    <hr>
 
+    <table class="table">
+        <tr>
+            <td colspan="2">質問とコメント</td>
+        </tr>
+        {% for question in event_questions %}
+        <tr>
+            <td>{{question.title}}</td>
+            <td>{{question.detail}}</td>
+        </tr>
+        {% endfor %}
+    </table>
+
+	<!--<table class="table">-->
+		<!--<tr>-->
+			<!--<td cospan="2">予約メニュー</td>-->
+		<!--</tr>-->
+		<!--<tr>-->
+			<!--<td cospan="2">受講者名</td>-->
+			<!--<td cospan="2">イベント名</td>-->
+			<!--<td cospan="2">user_id</td>-->
+			<!--<td cospan="2">予約キャンセル</td>-->
+		<!--</tr>-->
+		<!--{% for booking in event_bookings %}-->
+		<!--<tr>-->
+			<!--<td>{{booking.name}}</td>-->
+			<!--<td>{{booking.event}}</td>-->
+			<!--<td>{{booking.user.id}}</td>-->
+			<!--<td>{{booking.is_canceld}}</td>-->
+		<!--</tr>-->
+		<!--{% endfor %}-->
+	<!--</table>-->
 </div>
 {% endblock %}

@@ -22,13 +22,14 @@ class EventQuestion(Question):
        return self.title   # この戻り値がtitleとして表示される(時刻情報もね)
 
 
-class Booking(models.Model):
-    title = models.CharField(max_length=255)  # イベント名
-    user = models.ForeignKey(User, related_name='booking')  # 受講者
+class EventBookingList(models.Model):
+    name = models.CharField(max_length=255)  # 受講者
+    event = models.ForeignKey(Event, related_name='bookings')  # Questionと紐づいている
+    user = models.ForeignKey(User, related_name='booking')  #
     updated = models.DateTimeField(auto_now=True)  # 予約した日
     is_canceld = models.BooleanField(default=False)  # キャンセルフラク
     def __str__(self):
-       return self.title   # この戻り値がtitleとして表示される
+       return self.name   # この戻り値がtitleとして表示される
 
 # Booking
 # イベント

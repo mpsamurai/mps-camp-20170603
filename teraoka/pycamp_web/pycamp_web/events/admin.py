@@ -11,6 +11,6 @@ class EventAdmin(admin.ModelAdmin):
 class EventQuestionAdmin(admin.ModelAdmin):
    pass
 
-# @admin.register(models.EventBookingView)  # 予約サイト
-# class EventBookingView(admin.ModelAdmin):
-#    pass
+@admin.register(models.EventBookingList)  # 予約サイト
+class EventBookingList(admin.ModelAdmin):
+   pass
