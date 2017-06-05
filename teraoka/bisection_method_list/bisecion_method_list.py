@@ -1,85 +1,32 @@
-x = [1,2,3,4,5,6,7,8,9,10]
-y = 9
-print(y)
-low = 0
-high = len(x) -1
-print(high)
-print(x[high])
-z = round((x[low] + x[high]) / 2) # 中央値
-print(z)
-while low<=high:
-    if y == x[z]:
-        print("z", x[z])
-        print("見つかった！")
-        break
-    elif y > x[z]:
-        print("x[z]", x[z])
-        low = y
-    elif y < x[z]:
-        high = y
-        z = round((x[low] + x[high]) / 2)
-    else:
-        print("ありませんでした")
+# # リストの中から求めたい(num)を見つける
 
+class BisectionMethod():
 
+    def __init__(self):
+        self.low = 0
+        self.mid = 0
 
+    def bisection_method_list(self, num, list):
+        get_list = list
+        # low = 0
+        # mid = 0
+        result = num
+        high = get_list[-1]
 
+        while True:
+            self.mid = (high - self.low) / 2 + self.low
+            print("mid", self.mid)
+            if self.mid == result:
+                print("みつかったよ", self.mid, result)
+                break
+            else:
+                if self.mid < result:
+                    self.low = self.mid
+                else:
+                    high = self.mid
 
+if __name__ == '__main__':
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    bisection = BisectionMethod()
+    bisection.bisection_method_list(6, range(1,11))
 
