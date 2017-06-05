@@ -9,3 +9,8 @@ class EventQuestionForm(forms.ModelForm): #Modelを勝手に読み込む
         # ユーザーに対して見せる項目を決める
         fields = ['title', 'detail']
 
+# フォームを自動生成
+class EventBookingForm(forms.ModelForm):
+    class Meta:
+        model = models.EventBookingList
+        fields = ['name', 'event']

@@ -2,6 +2,24 @@
 {% block content %}
 <div class="panel panel-default">
 
+    {% if request.user.is_authenticated %}
+    <form method="post">
+        <table>
+            <tr>
+                <td>予約フォーム</td>
+            </tr>
+            <tr>
+                <td>
+                    {% csrf_token %}
+                    {{form}}
+                </td>
+            </tr>
+        </table>
+        <input type="submit">
+    </form>
+    {% endif %}
+    <hr>
+
 
 
 	<table class="table">
@@ -11,14 +29,12 @@
 		<tr>
 			<td cospan="2">受講者名</td>
 			<td cospan="2">イベント名</td>
-			<td cospan="2">user_id</td>
 			<td cospan="2">予約キャンセル</td>
 		</tr>
 		{% for booking in event_bookings %}
 		<tr>
 			<td>{{booking.name}}</td>
 			<td>{{booking.event}}</td>
-			<td>{{booking.user.id}}</td>
 			<td>{{booking.is_canceld}}</td>
 		</tr>
 		{% endfor %}

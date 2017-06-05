@@ -68,10 +68,10 @@ class EventDetailView(View):  # イベントの詳細ページを取得
     def get(self, request, event_id):
         try:
             event = models.Event.objects.get(id=event_id)
-            event_questions = models.EventQuestion.objects.filter(event__id = event_id)
+            event_questions = models.EventQuestion.objects.filter(event__id=event_id)
             form = forms.EventQuestionForm()
 
-            return render(request, 'events/events_detail.html', {'event': event, 'event_questions': event_questions, 'form':form})
+            return render(request, 'events/events_detail.html', {'event': event, 'event_questions': event_questions, 'form': form})
 
         except models.Event.DoesNotExist:
              #raise Http404
@@ -85,32 +85,35 @@ class EventDetailView(View):  # イベントの詳細ページを取得
         if form.is_valid():  # 変な情報がないことを保証する場合
             event_question = form.save(commit = False) # インスタンスだけ生成してDBには入れない(commit = False)
             event_question.user = request.user
-            event_question.event = models.Event.objects.get(id=event_id)
+            event_question.event = models.Event.objects.get(id=event_id)  # idからどのイベントに紐づいているかをチェック
             event_question.save()  # これはDBにsave()
             return self.get(request, event_id)
 
 
-# @method_decorator(login_required, "dispatch")  # ログイン確認を全体にかける場合は"dispatch"が必要
+# @method_decorator(login_required, "dispatch")
 class EventBookingList(View):  # 予約モデル
-    def get(self, request):
-        try:   #  requestにはたくさん情報ありUserが今リクエストきているuserだけを取得してfilterをかけてくれている
-            event_bookings = models.EventBookingList.objects.filter(user=request.user)  # eventのidを取得
-            # raise Exception(event_bookings)
-            return render(request, 'events/events_booking.html', {'event_bookings': event_bookings})
+    def get(self, request, event_id):
+        # raise Exception(request.user)
+        try:
+            event = models.Event.objects.get(id=event_id)
+            event_bookings = models.EventBookingList.objects.filter(event__id=event_id, user=request.user)  # eventのidを取得
+            #raise Exception(event_bookings)
+            form = forms.EventQuestionForm()
+
+            return render(request, 'events/events_booking.html', {'event': event, 'event_bookings': event_bookings, 'form': form})
 
         except models.Event.DoesNotExist:
-             #raise Http404
             return redirect('events:list')
 
     #  フォームは見えるけど、投稿はできない！ようにする(ログインしないと)
     @method_decorator(login_required)  # ビューが必ず持っているリクエストを受け取るか(ログインをしている人しか受け取ったらダメ)
     def post(self, request, event_id):
-        form = forms.EventQuestionForm(request.POST) #postされたデータを取得している-> formへ入れている
+        form = forms.EventBookingForm(request.POST) #postされたデータを取得している-> formへ入れている
         # インスタンスを作成する
         if form.is_valid():  # 変な情報がないことを保証する場合
-            event_question = form.save(commit = False) # インスタンスだけ生成してDBには入れない(commit = False)
-            event_question.user = request.user
-            event_question.event = models.Event.objects.get(id=event_id)
-            event_question.save()  # これはDBにsave()
+            event_booking = form.save(commit=False)  # インスタンスだけ生成してDBには入れない(commit = False)
+            event_booking.user = request.user
+            event_booking.event = models.Event.objects.get(id=event_id)  # idからどのイベントに紐づいているかをチェック
+            event_booking.save()  # これはDBにsave()
             return self.get(request, event_id)
 
