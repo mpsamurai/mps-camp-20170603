@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><title>Title</title></head>
+<body>
+
+<!--円のinput_boxを用意して-->
+<!--追加ボタンを押すと追加されたり、削除されたりする処理を作る-->
+<tr>
+    <td align="right"><b> CX：</b></td>
+    <td><input id="cx" type="text" name="cx" size="6" maxlength="4"></td>
+  </tr>
+  <tr>
+    <td align="right"><b> CY：</b></td>
+    <td><input id="cy" type="text" name="cy" size="6" maxlength="4"></td>
+  </tr>
+<tr>
+    <td align="right"><b> R：</b></td>
+    <td><input id="r" type="text" name="r" size="6" maxlength="4"></td>
+  </tr>
+  <tr>
+    <td align="right"><b> color：</b></td>
+    <td><input id="color" type="text" name="color" size="6" maxlength="20"></td>
+  </tr>
+<button id="createpush">createButton</button>
+<button id="removepush">removeButton</button>
+<!-- some html code here -->
+<script src="https://d3js.org/d3.v4.min.js"></script>
+<!--// グラグへのモジュールを使います-->
+<script src="https://d3js.org/d3-array.v1.min.js"></script>
+<script src="https://d3js.org/d3-collection.v1.min.js"></script>
+<script src="https://d3js.org/d3-color.v1.min.js"></script>
+<script src="https://d3js.org/d3-format.v1.min.js"></script>
+<script src="https://d3js.org/d3-interpolate.v1.min.js"></script>
+<script src="https://d3js.org/d3-time.v1.min.js"></script>
+<script src="https://d3js.org/d3-time-format.v2.min.js"></script>
+<script src="https://d3js.org/d3-scale.v1.min.js"></script>
+<script>
+
+var data = [
+    {"cx": 30, "cy": 30, "r":20, "color":"green"},
+    {"cx":70, "cy":70, "r":20, "color":"purple"},
+    {"cx":110, "cy":100, "r":20, "color":"red"}];
+
+var svgContainer = d3.select("body").append("svg") //d3で要素を作っている(svgのキャンパス作成)
+    .attr("width",200).attr("height",200);
+
+d3.select("#createpush").on("click", function(){
+    push()
+    draw()
+});
+
+function push() {
+
+    var datum = {};
+        var cx = document.getElementById("cx");
+        var cy = document.getElementById("cy");
+        var r = document.getElementById("r");
+        var color = document.getElementById("color");
+        datum["cx"] = cx.value;
+        datum["cy"] = cy.value;
+        datum["r"] = r.value;
+        datum["color"] = color.value;
+        data.push(datum);
+        console.log("data:", data);
+
+  // <circle>要素を作っている <circle cx="30" cy="30" r="20" style="fill: green;"></circle>
+
+}
+push()
+draw()
+
+function draw() {
+
+    svgContainer.selectAll("circle")         // d3の変数を利用
+        .data(data).enter().append("circle")  // <circle>要素を作っている <circle cx="30" cy="30" r="20" style="fill: green;"></circle>
+        .attr("cx", function(d) {return d.cx})
+        .attr("cy", function(d) {return d.cy})
+        .attr("r", function(d) {return d.r})
+        .style("fill", function (d){return d.color});
+
+    svgContainer.selectAll("circle")         // d3の変数を利用
+    .data(data).exit().remove()
+}
+
+
+d3.select("#removepush").on("click", function(){
+   remove()
+});
+
+function remove(){
+    data.pop()
+    draw()
+}
+
+
+
+</script>
+<!-- some javascript code here -->
+</body>
+</html>

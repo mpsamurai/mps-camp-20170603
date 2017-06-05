@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><title>Title</title></head>
+<body>
+
+<p>one</p>
+<p>two</p>
+<p>three</p>
+<p>four</p>
+
+<!-- some html code here -->
+<script src="https://d3js.org/d3.v4.min.js"></script>
+<script>
+d3.selectAll("p").data([16, 23, 42])
+    .exit().remove();  //これだけでもいける
+//    .enter().append("p")    //条件みたいなもの
+//    .text(function(d) { return d; }); //実行
+</script>
+<!-- some javascript code here -->
+</body>
+</html>
+
+
+<!--selectAll は HTMLを全部
+    select.bodyALL
+
+    <div
+d3.select(element_name)要素をとってくる
+    var p = d3.select("p") 最初の１個だけ
+    console.log(p);
+
+    d3.selectAll(element_name) pを全部とってくる
+    var p = d3.selectAll("p") これはオブジェクトで取得するので操作はその中身を取り出す(生のjavascriptでは操作できない)
+
+    console.log((d3.select("$data").selectAll("p");)  #はid
+    <div id="data">
+    <p>one</p>
+    <p>two</p>
+    </div>
+
+    d3jsSelection.data(array)
+
+    <script type="text/javascript">
+    var p = d3.select("body")
+       .selectAll("p")
+       .data([16, 23,42])
+       p へ割り当ててる
+       元々あったもの、付け加えるもの、
+       (_enter)にはこれから追加されるものが入っている[16,23,42]
+       (_exit)pが４つあった場合,4つ目のpは不要なものとして_exitへ割り当てる
+
+       <p>one</p> <- 16へ書き換わる
+       <p>two</p> <- 23へ書き換わる
+                  <- 指定されない要素は処理の指定が必要
+
+       <script>
+       アップデート、これから、削除の３つカテゴライズ要素
+       .text(function(d) { return d; })
+        textデータへ function(16) { return d;}  16が表示される
+       なければ仮想的にpを作るすなわち(_enter)へ入る
+
+       .enter().append("p")   が、新しく作られた要素に対して操作しますの宣言
+       1個1個処理するたびにappendしていく <p></p>が先ほどの<p>two</p>の下に作られる
+
+       <p>one</p><p>one</p><p>one</p><p>one</p>
+       d3.selectAll("p").data([
+       .exit().remove();  データがないものに対して操作して 削除
+
+
+       -->
