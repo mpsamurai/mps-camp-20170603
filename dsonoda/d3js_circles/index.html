@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<head><title>円の追加・削除</title></head>
+<body>
+
+    <table>
+        <tr>
+            <td>cx</td>
+            <td><input type="text" name="cx" id="cx" value=""></td>
+        </tr>
+        <tr>
+            <td>cy</td>
+            <td><input type="text" name="cy" id="cy" value=""></td>
+        </tr>
+        <tr>
+            <td>r</td>
+            <td><input type="text" name="r" id="r" value=""></td>
+        </tr>
+        <tr>
+            <td>color</td>
+            <td>
+                <select name="color" id="color">
+                    <option value="red">red</option>
+                    <option value="blue">blue</option>
+                    <option value="yellow">yellow</option>
+                    <option value="green">green</option>
+                    <option value="black">black</option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <button id="plus">plus</button>
+                <button id="delete">delete</button><br />
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2" id="draw_area"></td>
+        </tr>
+    </table>
+
+
+    <script src="https://d3js.org/d3.v4.min.js"></script>
+    <script src="https://d3js.org/d3-array.v1.min.js"></script>
+    <script src="https://d3js.org/d3-collection.v1.min.js"></script>
+    <script src="https://d3js.org/d3-color.v1.min.js"></script>
+    <script src="https://d3js.org/d3-format.v1.min.js"></script>
+    <script src="https://d3js.org/d3-interpolate.v1.min.js"></script>
+    <script src="https://d3js.org/d3-time.v1.min.js"></script>
+    <script src="https://d3js.org/d3-time-format.v2.min.js"></script>
+    <script src="https://d3js.org/d3-scale.v1.min.js"></script>
+
+    <script>
+        // 円の描画情報格納配列
+        var data = [];
+        // 描画SVG
+        var svgContainer = d3.select("body #draw_area")
+                                .append("svg").attr("width", 200).attr("height", 200);
+
+        /**
+         * グラフ軸
+         */
+        // x軸方向にdomain 0-200 : range 0-200にマッピング
+        var xAxis = d3.axisBottom(d3.scaleLinear().domain([0, 200]).range([0,200]));
+        // y軸方向にdomain 0-200 : range 0-200にマッピング
+        var yAxis = d3.axisRight(d3.scaleLinear().domain([0, 200]).range([0,200]));
+        // svg に 'g' (group) xAxis関数を当て込み
+        d3.select('svg').append('g').call(xAxis);
+        // svg に 'g' (group) yAxis関数を当て込み
+        d3.select('svg').append('g').call(yAxis);
+
+        /**
+         * 円の追加
+         * @type {Element}
+         */
+        var plusButton = document.getElementById("plus");
+        plusButton.addEventListener("click", function () {
+            var cxObj = document.getElementsByName("cx");
+            var cx = cxObj[0].value;
+            var cyObj = document.getElementsByName("cy");
+            var cy = cyObj[0].value;
+            var rObj = document.getElementsByName("r");
+            var r = rObj[0].value;
+            var objColor = document.getElementsByName("color");
+            var color = objColor[0].value;
+            data.push({"cx":cx, "cy":cy, "r":r, "color":color});
+            drawCircle(data);
+        });
+
+        /**
+         * 円の削除
+         * @type {Element}
+         */
+        var deleteButton = document.getElementById("delete");
+        deleteButton.addEventListener("click", function () {
+            data.pop();
+            drawCircle(data);
+        });
+
+        /**
+         * 円の描画
+         * @param data
+         */
+        var drawCircle = function (data) {
+            var svgCircles = svgContainer.selectAll("circle").data(data);
+            svgCircles.enter().append('circle')
+                .attr('cx', function(d) {return d.cx})
+                .attr('cy', function(d) {return d.cy})
+                .attr('r', function(d) {return d.r})
+                .style('fill', function(d) {return d.color});
+            svgCircles
+                .exit().remove();
+        }
+    </script>
+</body>
+</html>
