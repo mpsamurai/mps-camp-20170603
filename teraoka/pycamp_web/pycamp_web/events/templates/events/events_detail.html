@@ -8,16 +8,21 @@
 	</div>
     <p>{{ event.title }}   {{event.detail}}  {{ event.start }} ~ {{ event.end }}</p>
 	<div>
+		{% if request.user.is_authenticated %}
 		<form method="post">
 			{% csrf_token %}
 		<tr>{{ form }}</tr>
 		<input type="submit">
 		</form>
+		{% endif %}
+
 		{% for question in event_questions %}
 		<tr>
 			<td>{{ question }}</td>
 		</tr>
 		{% endfor %}
+
+
 	</div>
 
 </div>

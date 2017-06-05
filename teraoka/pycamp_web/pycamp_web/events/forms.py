@@ -8,3 +8,4 @@ class EventQuestionForm(forms.ModelForm): #Modelを勝手に読み込む
         model = models.EventQuestion   #どのmodelを読み込むか?フォームを自動で生成します
         # ユーザーに対して見せる項目を決める
         fields = ['title', 'detail']
+

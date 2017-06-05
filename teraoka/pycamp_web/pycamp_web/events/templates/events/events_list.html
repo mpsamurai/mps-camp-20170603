@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+
 {% block content %}
 <div class="panel panel-default">
 	<!-- Default panel contents -->
@@ -7,6 +8,18 @@
 	<p>イベント</p>
 	</div>
 
+	<nav>
+		<!--リストにして前後3つづつを表示させる-->
+
+	  <ul class="pagination">
+		  <li><a href="#">&laquo;</a></li>
+		  {% for page in pagination %}
+		<li><a href="{% url "events:list" %}?p={{ page }}">{{ page }}</a></li>
+		  {% endfor %}
+		  <li><a href="#">&raquo;</a></li>
+	  </ul>
+
+	</nav>
 
    <table class="table">
 		{% for event in events %}
@@ -28,23 +41,8 @@
 	</table>
 
 </div>
-
-<nav>
-	<!--リストにして前後3つづつを表示させる-->
-
-  <ul class="pagination">
-	  <li><a href="#">&laquo;</a></li>
-	  {% for page in pagination %}
-    <li><a href="{% url "events:list" %}?p={{ page }}">{{ page }}</a></li>
-	  {% endfor %}
-	  <li><a href="#">&raquo;</a></li>
-
-
-  </ul>
-
-</nav>
 {% endblock %}
-    <!---->
+
 <!-- Latest compiled and minified JavaScript -->
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 </body>

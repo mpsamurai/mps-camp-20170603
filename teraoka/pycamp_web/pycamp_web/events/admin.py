@@ -10,3 +10,7 @@ class EventAdmin(admin.ModelAdmin):
 @admin.register(models.EventQuestion)  # modelsイベントadminクラスですよと定義(adminに登録したいクラスを作る時)
 class EventQuestionAdmin(admin.ModelAdmin):
    pass
+
+# @admin.register(models.EventBookingView)  # 予約サイト
+# class EventBookingView(admin.ModelAdmin):
+#    pass
