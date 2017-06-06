@@ -1,6 +1,6 @@
 from django.http import HttpResponseRedirect
 from django.shortcuts import render
-from rating.form import UploadFileForm
+# from rating.form import UploadFileForm
 from django.views import View
 
 
@@ -13,15 +13,17 @@ class DataUploadView(View):
         return render(request, 'rating/upload_complete.html', {})
 
 
-class MovieDataUpload(View):
-
-    def upload_file(request):
-        if request.method == 'POST':
-            form = UploadFileForm(request.POST)
-            if form.is_valid():
-                f = request.FILES['data-file']
-                # raise Exception("F", f)
-                # return HttpResponseRedirect('/success/url/')
-        else:
-            form = UploadFileForm()
-        return render(request, 'rating/upload_complete.html', {'form': form})
+# class MovieDataUpload(View):
+#     """
+#     post
+#     """
+#     def upload_file(request):
+#         if request.method == 'POST':
+#             form = UploadFileForm(request.POST)
+#             if form.is_valid():
+#                 f = request.FILES['data-file']
+#                 # raise Exception("F", f)
+#                 # return HttpResponseRedirect('/success/url/')
+#         else:
+#             form = UploadFileForm()
+#         return render(request, 'rating/upload_complete.html', {'form': form})
