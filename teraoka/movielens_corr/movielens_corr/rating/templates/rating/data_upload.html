@@ -5,11 +5,11 @@
     <title>file選択</title>
 </head>
 <body>
-
-<form method="post" enctype=“multipart/form-data”>
+<!--ただし、request.FILES にデータが格納されるのは、リクエストメソッドが POST で、かつリクエストをポストした <form> の属性に enctype="multipart/form-data" が設定されていた場合に限られること-->
+<form enctype="multipart/form-data" method="post">
     {% csrf_token %}
     <input type="file" name="data-file">
-    <input type="submit">
+    <input type="submit" value="送信">
 </form>
 </form>
 
