@@ -3,7 +3,7 @@ from django.shortcuts import render
 # from rating.form import UploadFileForm
 from django.views import View
 from rating.form import UploadFileForm
-from rating.models import Movie, User, Rating
+from rating.models import Movie, UserProfile, Rating
 import pandas as pd
 from io import BytesIO, StringIO
 
@@ -18,27 +18,29 @@ class DataUploadView(View):
 
     def post(self, request):
         movies = Movie()
-        movie_data = pd.read_csv(BytesIO(request.FILES["movie-file"].read()),
+        movie_df = pd.read_csv(BytesIO(request.FILES["movie-file"].read()),
                              sep='::', header=None,
                              names=['movie_id', 'title', 'genres'], encoding='ISO-8859-1')
-        for title in movie_data['title']:
-            movies = Movie(title=title)
+        for _, (mid, title, _) in movie_df.iterrows():  # pandasの行を一度にとってくる
+            movies = Movie(mid=mid, title=title)     # 使わないものは _ にする
             movies.save()
 
-        users = User()
-        user_data = pd.read_csv(BytesIO(request.FILES["user-file"].read()),
+        users = UserProfile()
+        user_df = pd.read_csv(BytesIO(request.FILES["user-file"].read()),
                              sep='::', header=None,
                              names=['user_id', 'gender', 'age', 'occupation', 'zip'], encoding='ISO-8859-1')
-        for user_id, gender in zip(user_data['user_id'], user_data['gender']):
-            users = User(user=user_id, gender=gender)
+        for _, (user_id, gender, _, _, _) in user_df.iterrows():
+            users = UserProfile(uid=user_id, gender=gender)
             users.save()
 
         ratings = Rating()
-        rating_data = pd.read_csv(BytesIO(request.FILES["rating-file"].read()),
+        rating_df = pd.read_csv(BytesIO(request.FILES["rating-file"].read()),
                              sep='::', header=None,
                              names=['user_id', 'movie_id', 'rating', 'timestamp'], encoding='ISO-8859-1')
-        for rating in rating_data['rating']:
-            ratings = Rating(score=rating)
+        for _, (uid, mid, rating, _) in rating_df.iterrows():
+            user_profile = UserProfile.objects.get(uid=uid)  # UserProfileクラスのuidをとってくる
+            movie = Movie.objects.get(mid=mid)  # Movieクラスのmidをとってくる
+            ratings = Rating.objects.create(user_profile=user_profile, movie=movie, score=rating)  # 上でとっているidをRatingクラスに入れる(紐付ける)
             ratings.save()
 
         # raise Exception("tt", rating_data)

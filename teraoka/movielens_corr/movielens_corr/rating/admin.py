@@ -7,8 +7,8 @@ from rating import models
 class MovieAdmin(admin.ModelAdmin):
    pass
 
-@admin.register(models.User)  # modelsイベントadminクラスですよと定義(adminに登録したいクラスを作る時)
-class UserAdmin(admin.ModelAdmin):
+@admin.register(models.UserProfile)  # modelsイベントadminクラスですよと定義(adminに登録したいクラスを作る時)
+class UserProfileAdmin(admin.ModelAdmin):
    pass
 
 @admin.register(models.Rating)  # modelsイベントadminクラスですよと定義(adminに登録したいクラスを作る時)
