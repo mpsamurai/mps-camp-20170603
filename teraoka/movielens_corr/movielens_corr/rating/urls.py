@@ -4,6 +4,6 @@ from rating.views import DataUploadView
 
 
 urlpatterns = [
-    url(r'^$', DataUploadView.as_view(), name='list'),
+    url(r'^$', DataUploadView.as_view(), name='list'),  # as_view()はクラスベースで作った場合は定義しないといけない
     # url(r'^test/', Test.as_view()),
 ]

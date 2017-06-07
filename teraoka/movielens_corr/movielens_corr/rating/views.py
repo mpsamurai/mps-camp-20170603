@@ -37,14 +37,19 @@ class DataUploadView(View):
         rating_df = pd.read_csv(BytesIO(request.FILES["rating-file"].read()),
                              sep='::', header=None,
                              names=['user_id', 'movie_id', 'rating', 'timestamp'], encoding='ISO-8859-1')
+        count = 0
         for _, (uid, mid, rating, _) in rating_df.iterrows():
-            user_profile = UserProfile.objects.get(uid=uid)  # UserProfileクラスのuidをとってくる
-            movie = Movie.objects.get(mid=mid)  # Movieクラスのmidをとってくる
-            ratings = Rating.objects.create(user_profile=user_profile, movie=movie, score=rating)  # 上でとっているidをRatingクラスに入れる(紐付ける)
-            ratings.save()
+            count += 1
+            if count < 3000:
+                user_profile = UserProfile.objects.get(uid=uid)  # UserProfileクラスのuidをとってくる
+                movie = Movie.objects.get(mid=mid)  # Movieクラスのmidをとってくる
+                ratings = Rating.objects.create(user_profile=user_profile, movie=movie, score=rating)  # 上でとっているidをRatingクラスに入れる(紐付ける)
+                ratings.save()
+            else:
+                break
 
         # raise Exception("tt", rating_data)
-        raise Exception("test", movies['title'], users['gender'])
+        # raise Exception("test", movies['title'], users['gender'])
 
 
 

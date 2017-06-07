@@ -14,7 +14,7 @@ class UserProfile(models.Model):
     gender = models.CharField(max_length=255)
 
     def __str__(self):
-        return self.user
+        return self.uid
 
 class Rating(models.Model):
     movie = models.ForeignKey(Movie, related_name='ratings')  # ForeignKeyはint型です
