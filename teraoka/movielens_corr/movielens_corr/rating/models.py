@@ -17,8 +17,8 @@ class User(models.Model):
 
 class Rating(models.Model):
     movie = models.ForeignKey(Movie, related_name='ratings')
-    user = models.ForeignKey(User, related_name='own_ratings')
-    score = models.IntegerField()
+    user = models.ForeignKey(User, related_name='own_ratings', blank=True , null=True)
+    score = models.IntegerField(blank=True , null=True)
 
     def __str__(self):
         return '%s (%s)' % (self.movie.title, self.score)
