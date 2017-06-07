@@ -6,12 +6,22 @@
 </head>
 <body>
 <!--ただし、request.FILES にデータが格納されるのは、リクエストメソッドが POST で、かつリクエストをポストした <form> の属性に enctype="multipart/form-data" が設定されていた場合に限られること-->
-<form enctype="multipart/form-data" method="post">
-    {% csrf_token %}
-    <input type="file" name="data-file">
-    <input type="submit" value="送信">
-</form>
-</form>
+
+<div>
+    <table>
+        <form enctype="multipart/form-data" method="post">
+        {% csrf_token %}
+        <input type="file" name="movie-file">
+        <input type="file" name="user-file">
+        <input type="file" name="rating-file">
+            <input type="submit" value="送信">
+    </form>
+
+    </form>
+    </table>
+</div>
+
+
 
 </body>
 </html>
