@@ -1,7 +1,48 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div class="panel panel-default">
-    <p>相関図（男女）</p>
-</div>
+    <div class="panel panel-default">
+        <p>相関図（男女）</p>
+    </div>
+    <div id="draw_area"></div>
+
+
+
+    <script src="https://d3js.org/d3.v4.min.js"></script>
+    <script src="https://d3js.org/d3-array.v1.min.js"></script>
+    <script src="https://d3js.org/d3-collection.v1.min.js"></script>
+    <script src="https://d3js.org/d3-color.v1.min.js"></script>
+    <script src="https://d3js.org/d3-format.v1.min.js"></script>
+    <script src="https://d3js.org/d3-interpolate.v1.min.js"></script>
+    <script src="https://d3js.org/d3-time.v1.min.js"></script>
+    <script src="https://d3js.org/d3-time-format.v2.min.js"></script>
+    <script src="https://d3js.org/d3-scale.v1.min.js"></script>
+
+    <script src="https://d3js.org/d3.v4.min.js"></script>
+    <script type="text/javascript">
+
+        // 描画SVG
+        var svgContainer = d3.select("body #draw_area")
+                                .append("svg").attr("width", 200).attr("height", 200);
+
+        // x軸方向にdomain 0-200 : range 0-200にマッピング
+        var xAxis = d3.axisBottom(d3.scaleLinear().domain([0, 200]).range([0,200]));
+        // y軸方向にdomain 0-200 : range 0-200にマッピング
+        var yAxis = d3.axisRight(d3.scaleLinear().domain([0, 200]).range([0,200]));
+        // svg に 'g' (group) xAxis関数を当て込み
+        d3.select('svg').append('g').call(xAxis);
+        // svg に 'g' (group) yAxis関数を当て込み
+        d3.select('svg').append('g').call(yAxis);
+
+        d3.csv("{% url 'd3js_graph_movie_rating:get_corr_men_women' %}", function(err, data) {
+            var svgCircles = svgContainer.selectAll("circle").data(data).enter().append('circle')
+                .attr('cx', function(d) {return d.female * 40})
+                .attr('cy', function(d) {return d.male * 40})
+                .attr('r', function(d) {return 1})
+                .style('fill', function(d) {return "black"});
+
+//console.log(data);
+        });
+
+    </script>
 {% endblock %}

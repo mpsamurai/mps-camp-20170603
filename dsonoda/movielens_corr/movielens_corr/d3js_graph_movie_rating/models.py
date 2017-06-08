@@ -12,8 +12,8 @@ class Movie(models.Model):
     # genres =
 
 class Rating(models.Model):
-    uid = models.IntegerField()
-    mid = models.IntegerField()
+    user_info = models.ForeignKey('UserInfo', on_delete=models.CASCADE)
+    movie = models.ForeignKey('Movie', on_delete=models.CASCADE)
     rating = models.IntegerField()
 
 class UserInfo(models.Model):
