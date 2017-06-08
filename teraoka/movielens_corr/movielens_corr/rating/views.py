@@ -84,7 +84,10 @@ class ReadToCsv(View):
             movies_ratings['female_average'].append(female_average["score__avg"])
             #raise Exception(movies_ratings)
         movie_ratings_df = pd.DataFrame.from_dict(movies_ratings)
-        # raise Exception(movie_ratings_df)
+        movie_ratings_df = movie_ratings_df.fillna(0)
+
+
+        raise Exception("OK", movie_ratings_df)
         response = HttpResponse(content_type='text/csv')
         response['Content-Disposition'] = 'attachment;filename ="rating.csv"'
         movie_ratings_df.to_csv(response, index=False)

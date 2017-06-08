@@ -1,135 +1,8 @@
-<!--<!DOCTYPE html>-->
-<!--<html>-->
-<!--<head>-->
-    <!--<title>円の追加・削除</title>-->
-<!--</head>-->
-<!--<body>-->
-
-<!--<table>-->
-    <!--<tr>-->
-        <!--<td>cx</td>-->
-        <!--<td><input type="text" name="cx" id="cx" value=""></td>-->
-    <!--</tr>-->
-    <!--<tr>-->
-        <!--<td>cy</td>-->
-        <!--<td><input type="text" name="cy" id="cy" value=""></td>-->
-    <!--</tr>-->
-    <!--<tr>-->
-        <!--<td>r</td>-->
-        <!--<td><input type="text" name="r" id="r" value=""></td>-->
-    <!--</tr>-->
-    <!--<tr>-->
-        <!--<td>color</td>-->
-        <!--<td>-->
-            <!--<select name="color" id="color">-->
-                <!--<option value="red">red</option>-->
-                <!--<option value="blue">blue</option>-->
-                <!--<option value="yellow">yellow</option>-->
-                <!--<option value="green">green</option>-->
-                <!--<option value="black">black</option>-->
-            <!--</select>-->
-        <!--</td>-->
-    <!--</tr>-->
-    <!--<tr>-->
-        <!--<td colspan="2">-->
-            <!--<button id="plus">plus</button>-->
-            <!--<button id="delete">delete</button><br />-->
-        <!--</td>-->
-    <!--</tr>-->
-    <!--<tr>-->
-        <!--<td colspan="2" id="draw_area"></td>-->
-    <!--</tr>-->
-<!--</table>-->
-
-    <!--<script src="https://d3js.org/d3.v4.min.js"></script>-->
-    <!--<script src="https://d3js.org/d3-array.v1.min.js"></script>-->
-    <!--<script src="https://d3js.org/d3-collection.v1.min.js"></script>-->
-    <!--<script src="https://d3js.org/d3-color.v1.min.js"></script>-->
-    <!--<script src="https://d3js.org/d3-format.v1.min.js"></script>-->
-    <!--<script src="https://d3js.org/d3-interpolate.v1.min.js"></script>-->
-    <!--<script src="https://d3js.org/d3-time.v1.min.js"></script>-->
-    <!--<script src="https://d3js.org/d3-time-format.v2.min.js"></script>-->
-    <!--<script src="https://d3js.org/d3-scale.v1.min.js"></script>-->
-
-<!--<script>-->
-    <!--//円の描画情報格納配列-->
-    <!--var data = []-->
-    <!--//描画SVG-->
-    <!--var svgContainer = d3.select("body #draw_area")-->
-        <!--.append("svg").attr("width", 500).attr("height", 500);-->
-
-    <!--/**-->
-     <!--* グラフ軸-->
-     <!--*/-->
-    <!--// x軸方向にdmain 0-200 : range 0-200にマッピング-->
-    <!--var xAxis = d3.axisBottom(d3.scaleLinear().domain([0, 100]).range([0,500]));-->
-    <!--// y軸方向にdomain 0-200 : range 0-200にマッピング-->
-    <!--var yAxis = d3.axisRight(d3.scaleLinear().domain([0, 100]).range([0,500]));-->
-    <!--//svgに 'g'(group)xAxis関数を当て込み-->
-    <!--d3.select('svg').append('g').call(xAxis);-->
-    <!--//svgに 'g'(group)yAxis関数を当て込み-->
-    <!--d3.select('svg').append('g').call(yAxis);-->
-
-
-    <!--/**-->
-     <!--* 円の追加-->
-     <!--* @type {Element}-->
-     <!--*/-->
-    <!--var plusButton = document.getElementById("plus"); //変数とId紐付け-->
-    <!--plusButton.addEventListener("click", function (){-->
-        <!--var Obj = document.getElementsByName("cx");-->
-        <!--var cx = Obj[0].value;-->
-        <!--var Obj = document.getElementsByName("cy");-->
-        <!--var cy = Obj[0].value;-->
-<!--//        console.log("cy", cy);-->
-        <!--var Obj = document.getElementsByName("r");-->
-        <!--var r = Obj[0].value;-->
-        <!--var Obj = document.getElementsByName('color');-->
-        <!--var color = Obj[0].value;-->
-
-        <!--data.push({"cx":cx, "cy":cy, "r":r, "color":color});-->
-        <!--drawCircle(data);-->
-    <!--});-->
-
-    <!--/**-->
-     <!--* 円の削除-->
-     <!--* @type {Element}-->
-     <!--*/-->
-    <!--var deleteButton = document.getElementById("delete");-->
-    <!--deleteButton.addEventListener("click", function(){-->
-        <!--data.pop();-->
-        <!--drawCircle(data);-->
-    <!--});-->
-
-    <!--/**-->
-     <!--* 円の描画-->
-     <!--* @param data-->
-     <!--*/-->
-    <!--var drawCircle = function(data){-->
-        <!--var svgCircles = svgContainer.selectAll("circle").data(data);-->
-        <!--svgCircles.enter().append('circle')-->
-            <!--.attr('cx', function(d) {return d.cx})-->
-            <!--.attr('cy', function(d) {return d.cy})-->
-            <!--.attr('r', function(d) {return d.r})-->
-            <!--.style('fill', function(d) {return d.color});-->
-        <!--svgCircles-->
-            <!--.exit().remove();-->
-    <!--}-->
-
-    <!--</script>-->
-
-<!--</body>-->
-<!--</html>-->
-
-
-
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Ratingの描画</title>
 </head>
 <body>
 <table>
@@ -152,40 +25,61 @@
     </tr>
     </tbody>
 </table>
-<button id="load-movies">moviesButton</button>
+
+
+<button id="load-movies">StartButton</button>
 <!--<div id="movies"></div>-->
 <script src="https://d3js.org/d3.v4.min.js"></script>
+<script src="https://d3js.org/d3-array.v1.min.js"></script>
+<script src="https://d3js.org/d3-collection.v1.min.js"></script>
+<script src="https://d3js.org/d3-color.v1.min.js"></script>
+<script src="https://d3js.org/d3-format.v1.min.js"></script>
+<script src="https://d3js.org/d3-interpolate.v1.min.js"></script>
+<script src="https://d3js.org/d3-time.v1.min.js"></script>
+<script src="https://d3js.org/d3-time-format.v2.min.js"></script>
+<script src="https://d3js.org/d3-scale.v1.min.js"></script>
 <script type="text/javascript">
-            d3.select("#load-movies").on("click", function(){
-        d3.csv('{% url "rating:readtocsv" %}', function(err, data) {
-            console.log("1回目",data[0]["female_average"]);
-//            for(value in d3.keys(data[0])){
-//                console.log("value", value);
-//            };
 
-            console.log("test",d3.select("thead").append("tr"))
-                .selectAll("th")
-                .data(d3.keys(data[0]));
-                console.log("2",(data[0]))
-                .enter()
-                .append("th")
-                .text(function(d){
-                    console.log("2回目",d);
-                    return d});
-            d3.select("tbody")
-                .selectAll("tr")
-                .data(data)
-                .enter()
-                .append("tr")
-                .selectAll("td")
-                .data(function(d){
-                    //console.log("3回目",d3.values(d));
-                    return d3.values(d);
-                })
-                .enter()
-                .append("td")
-                .text(function(d){
-                    return d});
+
+
+
+    d3.select("#load-movies").on("click", function(){
+        d3.csv('{% url "rating:readtocsv" %}', function(err, data) {
+            console.log(data); // 4.5
+            console.log(data[0]); //Object { female_average: "4.5", male_average: "4.2", movie: "Toy Story (1995)" }
+
+//            .data(function(d){
+//                    console.log(d3.values(d));
+//                    return d3.values(d);
+            // var data = [{"cx": data[1]["female_average"], "cy": data[1]["male_average"], "r":10, "color":"green"}];
+
+            var svgContainer = d3.select("body").append("svg") //d3で要素を作っている(svgのキャンパス作成)
+            .attr("width",200).attr("height",200);
+
+            var svgCircles = svgContainer.selectAll("circle").data(data);
+            svgContainer.selectAll("circle")         // d3の変数を利用
+            .data(data).enter().append("circle")  // <circle>要素を作っている <circle cx="30" cy="30" r="20" style="fill: green;"></circle>
+
+            .attr("cx", function(d) {return d.female_average*40})
+
+            .attr("cy", function(d) {return d.male_average*40})
+            .attr("r", function(d) {return 2;})
+            .style("fill", function (d){return 'red'});
+
+
+            /**
+             * グラフ軸
+             */
+            // x軸方向にdmain 0-200 : range 0-200にマッピング
+            var xAxis = d3.axisBottom(d3.scaleLinear().domain([0, 5]).range([0,200]));
+            // y軸方向にdomain 0-200 : range 0-200にマッピング
+            var yAxis = d3.axisRight(d3.scaleLinear().domain([0, 5]).range([0,200]));
+            //svgに 'g'(group)xAxis関数を当て込み
+            d3.select('svg').append('g').call(xAxis);
+            //svgに 'g'(group)yAxis関数を当て込み
+            d3.select('svg').append('g').call(yAxis);
+
+
                 });
     });
 
@@ -194,8 +88,3 @@
 </body>
 </html>
 
-
-
-
-<!--{% url "rating:readtocsv" %}
-'http://192.168.33.10:8000/rating/readtocsv/'-->
