@@ -5,14 +5,9 @@
     <title>upload_ocmplete</title>
 </head>
 <body>
-<tr>
-    <td>{{ movies_title }}</td>
-</tr>
-<tr>
-    <td>{{ users_title }}</td>
-</tr>
-<tr>
-    <td>{{ ratings_title }}</td>
-</tr>
+<form enctype="multipart/form-data" method="post">
+        {% csrf_token %}
+    <input type="submit" value="送信">
+</form>
 </body>
 </html>
