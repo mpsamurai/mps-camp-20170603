@@ -1,33 +1,13 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Ratingの描画</title>
-</head>
-<body>
-<table>
-    <thead>
-        <tr>
-            <th>
-                <p></p>
-                <p></p>
-                <p></p>
-            </th>
-            <th></th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-    <tr>
-        <td></td>
-        <td></td>
-        <td></td>
-    </tr>
-    </tbody>
-</table>
+{% extends 'base.html' %}
+
+{% block content %}
+    <div >
+        <p>描画を開始します</p>
+    </div>
+<div id="draw_area"></div>
 
 
-<button id="load-movies">StartButton</button>
+<button id="load-movies">相関図を描画</button>
 <!--<div id="movies"></div>-->
 <script src="https://d3js.org/d3.v4.min.js"></script>
 <script src="https://d3js.org/d3-array.v1.min.js"></script>
@@ -47,15 +27,13 @@
             console.log(data[0]); //Object { female_average: "4.5", male_average: "4.2", movie: "Toy Story (1995)" }
 
             var svgContainer = d3.select("body").append("svg") //d3で要素を作っている(svgのキャンパス作成)
-            .attr("width",200).attr("height",200);
+            .attr("width",250).attr("height",250);
 
             var svgCircles = svgContainer.selectAll("circle").data(data);
             svgContainer.selectAll("circle")         // d3の変数を利用
             .data(data).enter().append("circle")  // <circle>要素を作っている <circle cx="30" cy="30" r="20" style="fill: green;"></circle>
-
-            .attr("cx", function(d) {return d.female_average*40})
-
-            .attr("cy", function(d) {return d.male_average*40})
+            .attr("cx", function(d) {return (d.female_average*40)+25})
+            .attr("cy", function(d) {return (5-d.male_average)*40})
             .attr("r", function(d) {return 2;})
             .style("fill", function (d){return 'red'});
 
@@ -65,15 +43,13 @@
             // x軸方向にdmain 0-200 : range 0-200にマッピング
             var xAxis = d3.axisBottom(d3.scaleLinear().domain([0, 5]).range([0,200]));
             // y軸方向にdomain 0-200 : range 0-200にマッピング
-            var yAxis = d3.axisRight(d3.scaleLinear().domain([0, 5]).range([0,200]));
+            var yAxis = d3.axisRight(d3.scaleLinear().domain([5, 0]).range([0,200]));
             //svgに 'g'(group)xAxis関数を当て込み
-            d3.select('svg').append('g').call(xAxis);
-            //svgに 'g'(group)yAxis関数を当て込み
-            d3.select('svg').append('g').call(yAxis);
+            d3.select('svg').append('g').call(xAxis).attr("transform", "translate(5, 200)");
+//            //svgに 'g'(group)yAxis関数を当て込み
+            d3.select('svg').append('g').call(yAxis).attr("transform", "translate(5, 0)");
                 });
     });
 
 </script>
-</body>
-</html>
-
+{% endblock %}

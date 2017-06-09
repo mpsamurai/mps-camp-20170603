@@ -1,13 +1,11 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>upload_ocmplete</title>
-</head>
-<body>
+{% extends 'base.html' %}
+
+{% block content %}
+{% csrf_token %}
 <form enctype="multipart/form-data" method="post">
-        {% csrf_token %}
-    <input type="submit" value="送信">
+        {% url 'rating:scatterplotview' %}
+    <h1>UpDate完了!</h1>
+    {% csrf_token %}
+    <input type="submit" value="描画画面へ">
 </form>
-</body>
-</html>
+{% endblock %}

@@ -1,12 +1,6 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>file選択</title>
-</head>
-<body>
-<!--ただし、request.FILES にデータが格納されるのは、リクエストメソッドが POST で、かつリクエストをポストした <form> の属性に enctype="multipart/form-data" が設定されていた場合に限られること-->
+{% extends 'base.html' %}
 
+{% block content %}
 <div>
     <table>
         <form enctype="multipart/form-data" method="post">
@@ -18,8 +12,7 @@
         </form>
     </table>
 </div>
+{% endblock %}
 
 
 
-</body>
-</html>

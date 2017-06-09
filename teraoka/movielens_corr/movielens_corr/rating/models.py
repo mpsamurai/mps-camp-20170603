@@ -3,14 +3,15 @@ from django.db import models
 
 # Create your models here.
 class Movie(models.Model):
-    mid = models.IntegerField()
+    mid = models.IntegerField(unique=True) # models.IntegerField(unique=True)は同じ値が入ってきたらエラー
     title = models.CharField(max_length=255)
-
+    # models.Movie.objects.update_or_create(mid=mid, default={_,_})  これならupdate対応
+    # https://docs.djangoproject.com/en/1.11/ref/models/querysets/  [update_or_createで検索するとでる]
     def __str__(self):
         return self.title
 
 class UserProfile(models.Model):
-    uid = models.IntegerField()
+    uid = models.IntegerField(unique=True)
     gender = models.CharField(max_length=255)
 
     def __str__(self):
