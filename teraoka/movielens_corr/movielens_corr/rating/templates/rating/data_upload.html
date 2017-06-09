@@ -11,13 +11,11 @@
     <table>
         <form enctype="multipart/form-data" method="post">
         {% csrf_token %}
-        <input type="file" name="movie-file">
-        <input type="file" name="user-file">
-        <input type="file" name="rating-file">
-            <input type="submit" value="送信">
-    </form>
-
-    </form>
+        <input type="file" name="movie-file" value="movie-file">
+        <input type="file" name="user-file" value="user-file">
+        <input type="file" name="rating-file" value="rating-file">
+        <input type="submit" value="送信">
+        </form>
     </table>
 </div>
 
