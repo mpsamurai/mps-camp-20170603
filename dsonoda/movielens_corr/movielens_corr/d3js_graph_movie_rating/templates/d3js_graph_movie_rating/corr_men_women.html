@@ -23,25 +23,31 @@
 
         // 描画SVG
         var svgContainer = d3.select("body #draw_area")
-                                .append("svg").attr("width", 200).attr("height", 200);
+            .append("svg")
+            .attr("width", 250)
+            .attr("height", 250);
 
-        // x軸方向にdomain 0-200 : range 0-200にマッピング
-        var xAxis = d3.axisBottom(d3.scaleLinear().domain([0, 200]).range([0,200]));
-        // y軸方向にdomain 0-200 : range 0-200にマッピング
-        var yAxis = d3.axisRight(d3.scaleLinear().domain([0, 200]).range([0,200]));
+        // x軸方向にdomain 0-5 : range 0-200にマッピング
+        var xAxis = d3.axisBottom(d3.scaleLinear().domain([0, 5]).range([0,200]));
+        // y軸方向にdomain 5-0 : range 0-200にマッピング
+        var yAxis = d3.axisLeft(d3.scaleLinear().domain([5, 0]).range([0,200]));
         // svg に 'g' (group) xAxis関数を当て込み
-        d3.select('svg').append('g').call(xAxis);
+        d3.select('svg')
+            .append('g')
+            .call(xAxis)
+            .attr("transform", "translate(25, 210)");
         // svg に 'g' (group) yAxis関数を当て込み
-        d3.select('svg').append('g').call(yAxis);
+        d3.select('svg')
+            .append('g')
+            .call(yAxis)
+            .attr("transform", "translate(25, 10)");
 
         d3.csv("{% url 'd3js_graph_movie_rating:get_corr_men_women' %}", function(err, data) {
             var svgCircles = svgContainer.selectAll("circle").data(data).enter().append('circle')
-                .attr('cx', function(d) {return d.female * 40})
-                .attr('cy', function(d) {return d.male * 40})
+                .attr('cx', function(d) {return d.female * 40 + 25})
+                .attr('cy', function(d) {return d.male * 40 + 10})
                 .attr('r', function(d) {return 1})
                 .style('fill', function(d) {return "black"});
-
-//console.log(data);
         });
 
     </script>
