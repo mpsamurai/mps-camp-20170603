@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'd3js_graph_movie_rating',
+    'test_sync',
 ]
 
 MIDDLEWARE = [

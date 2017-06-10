@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Celery による並列処理</title>
+
+</head>
+<body>
+
+    <p>View Queue Status</p>
+
+    <table border="1">
+        <tr>
+            <td>
+                queue id
+            </td>
+            <td>
+                status(1: push queue, 2: calc now, 3 calc complated)
+            </td>
+        </tr>
+    {% for sync_status in sync_status_list %}
+        <tr>
+            <td>
+                {{sync_status.queue_id}}
+            </td>
+            <td>
+
+                {{sync_status.status}}
+            </td>
+        </tr>
+    {% endfor %}
+    </table>
+
+</body>
+</html>

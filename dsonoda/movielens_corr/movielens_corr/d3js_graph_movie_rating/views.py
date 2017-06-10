@@ -2,6 +2,7 @@ from django.views import View
 from django.shortcuts import render
 from d3js_graph_movie_rating import models
 from d3js_graph_movie_rating import forms
+from d3js_graph_movie_rating import tasks
 import csv
 import pandas as pd
 from io import BytesIO
@@ -117,3 +118,17 @@ class GetCorrMenWomenView(View):
         writer.writerows(avg_ratings)
 
         return response
+
+
+class AddWithSleepSyncView(View):
+    def get(self, request):
+        # 直列に実行
+        r = tasks.add_with_sleep.apply((2,3))
+        return HttpResponse('The answer is %s' % r.get())
+
+class AddWithSleepAsyncView(View):
+    def get(self, request):
+        # 並列に実行
+        # delay の分待つことになったらCelery にタスクを投げる
+        r = tasks.add_with_sleep.delay(2,3)
+        return HttpResponse('The answer is queued %s' % r)

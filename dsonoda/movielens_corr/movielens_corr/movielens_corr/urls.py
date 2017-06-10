@@ -17,8 +17,10 @@ from django.conf.urls import url,include
 from django.contrib import admin
 
 import d3js_graph_movie_rating.urls
+import test_sync.urls
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^d3js_graph_movie_rating/', include(d3js_graph_movie_rating.urls, namespace='d3js_graph_movie_rating')),
+    url(r'^test_sync/', include(test_sync.urls, namespace='test_sync')),
 ]
