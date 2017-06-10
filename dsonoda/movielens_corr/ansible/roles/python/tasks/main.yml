@@ -1,0 +1,81 @@
+---
+- name: pip3 install
+  become: yes
+  apt:
+   name: "{{item}}"
+   update_cache: yes
+  with_items:
+   - python3-pip
+   - python3-dev
+
+- name: virtualenv install
+  become: yes
+  pip:
+   executable: /usr/bin/pip3
+   name: "virtualenv"
+
+- name: gunicorn install and setting venv
+  pip:
+   name: "gunicorn"
+   virtualenv: /home/ubuntu/venv
+   virtualenv_command: virtualenv
+
+- name: copy github sshkey
+  copy:
+    src: /home/ubuntu/.ssh/id_rsa_github
+    dest: /home/ubuntu/.ssh/id_rsa_github
+    mode: 0700
+
+- name: git clone requirements.txt
+  git:
+   accept_hostkey: yes
+   repo: 'git@github.com:mpsamurai/pycamp-20170603.git'
+   dest: /home/ubuntu/pycamp-20170603
+   version: dsonoda/movielens-corr
+   key_file: /home/ubuntu/.ssh/id_rsa_github
+
+- name: requirements.txt install
+  pip:
+   requirements: "/home/ubuntu/pycamp-20170603/dsonoda/movielens_corr/requirements.txt"
+   virtualenv: /home/ubuntu/venv
+   virtualenv_command: virtualenv
+
+- name: nginx, supervisor install
+  become: yes
+  apt:
+   name: "{{item}}"
+   update_cache: yes
+  with_items:
+   - nginx
+   - supervisor
+
+- name: copy setting files(nginx)
+  become: yes
+  copy:
+    src: default
+    dest: /etc/nginx/sites-available/default
+
+- name: copy setting files(gunicorn)
+  copy:
+    src: start.sh
+    dest: /home/ubuntu/pycamp-20170603/dsonoda/movielens_corr/start.sh
+    mode: 0755
+
+- name: copy setting files(supervisor)
+  become: yes
+  copy:
+    src: movielens_corr.conf
+    dest: /etc/supervisor/conf.d/movielens_corr.conf
+
+- name: restart nginx
+  become: yes
+  service:
+    name: nginx
+    state: reloaded
+
+- name: restart supervisord
+  become: yes
+  service:
+    name: supervisor
+    state: reloaded
+
