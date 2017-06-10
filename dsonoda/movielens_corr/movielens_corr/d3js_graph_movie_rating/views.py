@@ -48,6 +48,7 @@ class DataUpView(View):
             names=['uid', 'gender', 'age', 'occupation', 'zip'],
             encoding='ISO-8859-1')
 
+        # transaction
         with transaction.atomic():
             # DB格納
             for i, (mid, title, genres) in movie_data.iterrows():
@@ -61,7 +62,7 @@ class DataUpView(View):
                     gender=gender)
 
             # レーティング情報は多すぎるため任意の件数でカット
-            cnt = 3000
+            cnt = 6000
             for i, (r_uid, r_mid, rating, timestamp) in rating_data.iterrows():
                 movie = models.Movie.objects.get(mid=r_mid)
                 user_info = models.UserInfo.objects.get(uid=r_uid)
@@ -70,16 +71,7 @@ class DataUpView(View):
                     break
                 cnt -= 1
 
-        return self.get(request)
-
-    # def end(self, request):
-    #     """
-    #     完了画面
-    #     :param request:
-    #     :return:
-    #     """
-    #     return render(request, 'd3js_graph_movie_rating/data_up_end.html', {})
-
+        return render(request, 'd3js_graph_movie_rating/data_up_end.html')
 
 # グラフ表示のみ
 class CorrMenWomenView(View):
