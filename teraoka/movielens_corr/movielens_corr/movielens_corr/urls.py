@@ -21,6 +21,7 @@ import rating.urls
 
 
 
+
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^rating/', include(rating.urls, namespace='rating')),

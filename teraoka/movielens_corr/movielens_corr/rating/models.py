@@ -24,3 +24,10 @@ class Rating(models.Model):
 
     def __str__(self):
         return '%s (%s)' % (self.movie.title, self.score)
+
+class DataUploadTask(models.Model):
+    state = models.CharField(max_length=255)
+    tid = models.CharField(max_length=255)
+    # progress = models.TextField(null=True)
+    def __str__(self):
+        return self.state
