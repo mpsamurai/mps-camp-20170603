@@ -1,6 +1,6 @@
 from movielens_corr.celery import app as celery_app
 from celery.utils.log import get_task_logger
-from test_sync import models
+from d3js_graph_movie_rating import models
 
 logger = get_task_logger(__name__)
 

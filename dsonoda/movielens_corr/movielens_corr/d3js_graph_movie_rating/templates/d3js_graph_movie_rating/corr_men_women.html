@@ -1,26 +1,13 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block content %}
-    <div class="panel panel-default">
-        <p>相関図（男女）</p>
-    </div>
+    <p>映画の男女レーティング相関図</p>
     <div id="draw_area"></div>
+{% endblock %}
 
-
-
-    <script src="https://d3js.org/d3.v4.min.js"></script>
-    <script src="https://d3js.org/d3-array.v1.min.js"></script>
-    <script src="https://d3js.org/d3-collection.v1.min.js"></script>
-    <script src="https://d3js.org/d3-color.v1.min.js"></script>
-    <script src="https://d3js.org/d3-format.v1.min.js"></script>
-    <script src="https://d3js.org/d3-interpolate.v1.min.js"></script>
-    <script src="https://d3js.org/d3-time.v1.min.js"></script>
-    <script src="https://d3js.org/d3-time-format.v2.min.js"></script>
-    <script src="https://d3js.org/d3-scale.v1.min.js"></script>
-
-    <script src="https://d3js.org/d3.v4.min.js"></script>
+{% block js %}
     <script type="text/javascript">
-
         // 描画SVG
         var svgContainer = d3.select("body #draw_area")
             .append("svg")
@@ -49,6 +36,5 @@
                 .attr('r', function(d) {return 1})
                 .style('fill', function(d) {return "black"});
         });
-
     </script>
 {% endblock %}
