@@ -1,0 +1,78 @@
+---
+- name: install system packages apt
+  become: yes
+  apt:
+   name: "{{item}}"
+   update_cache: yes
+  with_items:
+   - python3-pip
+   - python3-dev
+   - nginx
+   - supervisor
+
+- name: install system packages pip3
+  become: yes
+  pip:
+   name: "{{item}}"
+   executable: pip3
+  with_items:
+   - virtualenv
+
+- name: install system packages pip3
+  pip:
+   name: "{{item}}"
+   virtualenv: /home/ubuntu/venv
+  with_items:
+   - django
+   - gunicorn
+
+
+- name: create file
+  become: yes
+  copy:
+    src: default
+    dest: /etc/nginx/sites-available/default
+    force: yes
+
+- name: create supervisor
+  become: yes
+  copy:
+    src: movielens_corr.conf
+    dest: /etc/supervisor/conf.d/movielens_corr.conf
+    force: yes
+
+- name: create ssh
+  copy:
+    src: /home/ubuntu/.ssh/id_rsa_github
+    dest: /home/ubuntu/.ssh/id_rsa_github
+    force: yes
+    mode: 0700
+
+
+- name: github
+  git:
+    repo: git@github.com:mpsamurai/pycamp-20170603.git
+    dest: /home/ubuntu/pycamp-20170603/
+    clone: yes
+    key_file: /home/ubuntu/.ssh/id_rsa_github
+    accept_hostkey: yes
+    version: teraoka/movielens_corr
+
+- name: install system packages pip3
+  pip:
+   requirements: /home/ubuntu/movielenv_corr/teraoka/movielens_corr/requirements.txt
+   virtualenv: /home/ubuntu/venv
+
+
+- name: restart nginx
+  become: yes
+  service:
+   name: nginx
+   state: reloaded
+
+
+- name: restart supervisord
+  become: yes
+  service:
+   name: supervisor
+   state: reloaded
