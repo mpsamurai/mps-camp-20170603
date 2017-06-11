@@ -14,11 +14,19 @@
         <![endif]-->
     </head>
     <body>
-        <h3>映画レーティングサイト</h3>
-
-        <a href="{% url 'd3js_graph_movie_rating:index' %}">ダッシュボード</a><br />
-        <a href="{% url 'd3js_graph_movie_rating:data_up' %}">データアップロード</a><br />
-        <a href="{% url 'd3js_graph_movie_rating:corr_men_women' %}">相関図（男女）</a><br />
+        <table border="1">
+            <tr>
+                <td colspan="3">映画レーティングサイト</td>
+            </tr>
+            <tr>
+                <td><a href="{% url 'd3js_graph_movie_rating:index' %}">ダッシュボード</a></td>
+                <td><a href="{% url 'd3js_graph_movie_rating:data_up' %}">データアップロード</a></td>
+                <td><a href="{% url 'd3js_graph_movie_rating:corr_men_women' %}">相関図（男女）</a></td>
+            </tr>
+            <tr>
+                <td colspan="3">{% block page_title %}{% endblock %}</td>
+            </tr>
+        </table>
 
         {% block content %}{% endblock %}
 

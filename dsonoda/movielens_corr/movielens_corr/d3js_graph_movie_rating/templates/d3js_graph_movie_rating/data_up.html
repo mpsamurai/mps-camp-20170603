@@ -1,17 +1,17 @@
 {% extends 'base.html' %}
 {% load static %}
+{% block page_title %}データアップロード{% endblock %}
 
 {% block content %}
-    <p>データアップロード</p>
     <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
         <table border="1">
             <tr>
                 <td>アップロードステータス</td>
                 <td>
-                    movie: {% if movie_up_status == consts_fileupload_status.1.0 %}{{consts_fileupload_status.1.1}}{% else %}{{consts_fileupload_status.1.1}}{% endif %}<br />
-                    rating: {% if rating_up_status == consts_fileupload_status.1.0 %}{{consts_fileupload_status.1.1}}{% else %}{{consts_fileupload_status.1.1}}{% endif %}<br />
-                    user_info: {% if user_info_up_status == consts_fileupload_status.1.0 %}{{consts_fileupload_status.1.1}}{% else %}{{consts_fileupload_status.1.1}}{% endif %}<br />
+                    movie: {% if movie_up_status == consts_fileupload_status.1.0 %}{{consts_fileupload_status.1.1}}{% else %}{{consts_fileupload_status.0.1}}{% endif %}<br />
+                    rating: {% if rating_up_status == consts_fileupload_status.1.0 %}{{consts_fileupload_status.1.1}}{% else %}{{consts_fileupload_status.0.1}}{% endif %}<br />
+                    user_info: {% if user_info_up_status == consts_fileupload_status.1.0 %}{{consts_fileupload_status.1.1}}{% else %}{{consts_fileupload_status.0.1}}{% endif %}<br />
                 </td>
             </tr>
             <tr>
