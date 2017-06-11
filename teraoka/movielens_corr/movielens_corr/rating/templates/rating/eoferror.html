@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div>
+    <p>{{ message }}</p>
+
+    <a href="{% url 'rating:list' %}">Homeへ戻る</a>
+{% endblock %}
+</div>

@@ -28,6 +28,7 @@ class Rating(models.Model):
 class DataUploadTask(models.Model):
     state = models.CharField(max_length=255)
     tid = models.CharField(max_length=255)
-    # progress = models.TextField(null=True)
+    progress = models.FloatField(null=True)
+    complete = models.BooleanField(default=False)
     def __str__(self):
         return self.state

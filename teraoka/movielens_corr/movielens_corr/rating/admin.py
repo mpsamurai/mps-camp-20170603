@@ -14,3 +14,7 @@ class UserProfileAdmin(admin.ModelAdmin):
 @admin.register(models.Rating)  # modelsイベントadminクラスですよと定義(adminに登録したいクラスを作る時)
 class RatingAdmin(admin.ModelAdmin):
    pass
+
+@admin.register(models.DataUploadTask)  # modelsイベントadminクラスですよと定義(adminに登録したいクラスを作る時)
+class DataUploadTaskAdmin(admin.ModelAdmin):
+   pass
