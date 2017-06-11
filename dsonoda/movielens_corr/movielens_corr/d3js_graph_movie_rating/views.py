@@ -3,17 +3,23 @@ from django.shortcuts import render
 from d3js_graph_movie_rating import models
 from d3js_graph_movie_rating import forms
 from d3js_graph_movie_rating import tasks
-import csv
-import pandas as pd
-from io import BytesIO
+from d3js_graph_movie_rating import utils
+from d3js_graph_movie_rating import consts
 from django.http import HttpResponse
-from django.db import transaction
+from hashlib import md5
+import csv
+import time
+import json
+# import pandas as pd
+# from io import BytesIO
+# from django.db import transaction
 from django.db.models import Avg
 
 
 class IndexView(View):
     def get(self, request):
         return render(request, 'd3js_graph_movie_rating/index.html', {})
+
 
 class DataUpView(View):
     def get(self, request):
@@ -22,8 +28,25 @@ class DataUpView(View):
         :param request:
         :return:
         """
+
+        # 並列処理ステータス
+        sync_status = utils.get_sync_status_by_mode(consts.SYNC_MODE[0][0])
+
+        # ファイルアップロードステータス
+        movie_up_status = utils.get_fileupload_status(models.Movie)
+        rating_up_status = utils.get_fileupload_status(models.Rating)
+        user_info_up_status = utils.get_fileupload_status(models.UserInfo)
+
         form = forms.DataUpForm()
-        return render(request, 'd3js_graph_movie_rating/data_up.html', {'form': form})
+        return render(request, 'd3js_graph_movie_rating/data_up.html', {
+            'form': form,
+            'sync_status': sync_status,
+            'movie_up_status': movie_up_status,
+            'rating_up_status': rating_up_status,
+            'user_info_up_status': user_info_up_status,
+            'consts_sync_status': consts.SYNC_STATUS,
+            'consts_fileupload_status': consts.FILEUPLOAD_STATUS
+        })
 
     def post(self, request):
         """
@@ -31,58 +54,34 @@ class DataUpView(View):
         :param request:
         :return:
         """
-        # ファイルを受け取り
-        movie_data = pd.read_csv(BytesIO(request.FILES["movie_file"].read()),
-            sep='::',
-            header=None,
-            names=['mid', 'title', 'genres'],
-            encoding='ISO-8859-1')
-        rating_data = pd.read_csv(BytesIO(request.FILES["rating_file"].read()),
-            sep='::',
-            header=None,
-            names=['uid', 'mid', 'rating', 'timestamp'],
-            encoding='ISO-8859-1')
-        user_data = pd.read_csv(BytesIO(request.FILES["user_file"].read()),
-            sep='::',
-            header=None,
-            names=['uid', 'gender', 'age', 'occupation', 'zip'],
-            encoding='ISO-8859-1')
+        # taskid 生成
+        queue_id = utils.get_queue_id()
 
-        # transaction
-        with transaction.atomic():
-            # DB格納
-            for i, (mid, title, genres) in movie_data.iterrows():
-                obj = models.Movie.objects.create(
-                    mid = mid,
-                    title = title)
-
-            for i, (uid, gender, age, occupation, zip_code) in user_data.iterrows():
-                obj = models.UserInfo.objects.create(
-                    uid=uid,
-                    gender=gender)
-
-            # レーティング情報は多すぎるため任意の件数でカット
-            cnt = 6000
-            for i, (r_uid, r_mid, rating, timestamp) in rating_data.iterrows():
-                movie = models.Movie.objects.get(mid=r_mid)
-                user_info = models.UserInfo.objects.get(uid=r_uid)
-                obj = models.Rating.objects.create(user_info=user_info, movie=movie, rating=rating)
-                if cnt == 0:
-                    break
-                cnt -= 1
+        # ステータス登録 1: Celery にタスクを投げる
+        if models.SyncStatus.objects.create(queue_id=queue_id, mode=consts.SYNC_MODE[0][0], status=consts.SYNC_STATUS[0][0]).id:
+            movie_file = request.FILES["movie_file"].read()
+            rating_file = request.FILES["rating_file"].read()
+            user_file = request.FILES["user_file"].read()
+            # Celery にキューを投げる
+            # 並列に実行
+            # apply_async() 、つまりCeleryにタスクが投げられる
+            r = tasks.fileupload.apply_async(
+                (json.dumps({
+                    'movie': movie_file.decode('ISO-8859-1'),
+                    'user_info': user_file.decode('ISO-8859-1'),
+                    'rating': rating_file.decode('ISO-8859-1')
+                }),
+                queue_id)
+            )
+        else:
+            raise Exception(111)
 
         return render(request, 'd3js_graph_movie_rating/data_up_end.html')
+
 
 # グラフ表示のみ
 class CorrMenWomenView(View):
     def get(self, request):
-        # avg_ratings = []
-        # for movie in models.Movie.objects.all():
-        #     female_avg = models.Rating.objects.filter(movie=movie, user_info__gender="F").aggregate(Avg('rating'))
-        #     male_ave = models.Rating.objects.filter(movie=movie, user_info__gender="M").aggregate(Avg('rating'))
-        #     avg_ratings.append([movie.title, female_avg['rating__avg'], male_ave['rating__avg']])
-        # raise Exception(avg_ratings)
-
         return render(request, 'd3js_graph_movie_rating/corr_men_women.html', {})
 
 
@@ -105,7 +104,8 @@ class GetCorrMenWomenView(View):
             if male_ave['rating__avg'] is None:
                 male_ave['rating__avg'] = 0
             avg_ratings.append([movie.title, female_avg['rating__avg'], male_ave['rating__avg']])
-        # raise Exception(avg_ratings)
+
+        # カラム名のバインド
         writer.writerow(['title', 'female', 'male'])
         writer.writerows(avg_ratings)
 
