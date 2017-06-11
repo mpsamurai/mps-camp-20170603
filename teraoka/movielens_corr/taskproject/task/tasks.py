@@ -1,4 +1,4 @@
-from movielens_corr.celery import app as celery_app
+from taskproject.celery import app as celery_app
 from celery.utils.log import get_task_logger
 # from task.views import TaskStart
 from task.models import TaskTable

@@ -1,10 +1,87 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>$Title$</title>
-</head>
-<body>
-$END$
-</body>
+
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, user-scalable=no" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+        <title>tm tool</title>
+
+        <!-- Latest compiled and minified CSS -->
+        <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/bootstrap/3.0.1/css/bootstrap.min.css">
+
+        <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+        <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+        <!-- Latest compiled and minified JavaScript -->
+        <script src="http://netdna.bootstrapcdn.com/bootstrap/3.0.1/js/bootstrap.min.js"></script>
+
+        <style>
+        body {
+            padding-top: 50px;
+        }
+        </style>
+    </head>
+    <body>
+        <div class="navbar navbar-inverse navbar-fixed-top">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="{% url 'rating:list' %}">映画の評価データ分析サイト</a>
+                </div>
+                <div class="collapse navbar-collapse">
+                    <ul class="nav navbar-nav">
+                        <li><a href="{% url 'rating:list' %}">入力画面</a></li>
+                        <li><a href="{% url 'rating:scatterplotview' %}">描画画面</a></li>
+
+
+                        <div id="draw_area"></div>
+
+                    </ul>
+                </div>
+            </div>
+        </div>
+<svg id="graph" width="200" height="30"></svg>
+                                {% block content %}{% endblock %}
+
+
+<script src="https://d3js.org/d3.v4.min.js"></script>
+<script src="https://d3js.org/d3-array.v1.min.js"></script>
+<script src="https://d3js.org/d3-collection.v1.min.js"></script>
+<script src="https://d3js.org/d3-color.v1.min.js"></script>
+<script src="https://d3js.org/d3-format.v1.min.js"></script>
+<script src="https://d3js.org/d3-interpolate.v1.min.js"></script>
+<script src="https://d3js.org/d3-time.v1.min.js"></script>
+<script src="https://d3js.org/d3-time-format.v2.min.js"></script>
+<script src="https://d3js.org/d3-scale.v1.min.js"></script>
+<script type="text/javascript">
+
+
+    d3.csv('{% url "rating:getprogress" %}', function(err, data) {
+
+        console.log(data);
+        d3.select("#graph")
+            .selectAll("rect")
+            .data(data)
+            .enter()
+            .append("rect")
+            .attr("style", function(d){
+                return "width=" + d.progress * 100 + "%";
+            })
+            .attr("height", 20)
+            .attr("x", 0)
+            .attr("y", function(d){
+                return 20;
+            });
+
+    });
+
+
+        </script>
+
+    </body>
 </html>

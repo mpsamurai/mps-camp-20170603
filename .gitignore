@@ -103,3 +103,11 @@ ENV/
 # PyCharm
 .idea
 
+# AWS
+**/hiroshi.pem
+
+# github
+**/id_rsa_github
+
+# sshkey
+**/.ssh
